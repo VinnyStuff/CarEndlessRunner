@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     {
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
+        //testing git
     }
     private void SetCurrentScene(string scene)
     {
