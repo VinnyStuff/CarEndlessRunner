@@ -9,21 +9,13 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddRigidbody();
         speed = Random.Range(8, 11);
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         rb.velocity = Vector3.forward * speed;
-    }
-    void AddRigidbody() //and get
-    {
-        if (gameObject.GetComponent<Rigidbody>() == null)
-        {
-            gameObject.AddComponent<Rigidbody>();
-            rb.GetComponent<Rigidbody>();
-        }
     }
 }

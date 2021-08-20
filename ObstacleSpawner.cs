@@ -11,7 +11,7 @@ public class ObstacleSpawner : MonoBehaviour
     public int emptinessBetweenObstacles;
     public int currentPositionObstacle;
     private int xPositionObstacle;
-    private int numberOfLines = 8;
+    private int numberOfLines = 5;
 
     public void Start()
     {
@@ -48,9 +48,13 @@ public class ObstacleSpawner : MonoBehaviour
                 int xPositionObstacleChoice = Random.Range(0, 3);
                 if (xPositionObstacleChoice == xPositionObstacle)
                 {
-                    while (xPositionObstacleChoice != xPositionObstacle)
+                    while (true)
                     {
                         xPositionObstacleChoice = Random.Range(0, 3);
+                        if (xPositionObstacleChoice != xPositionObstacle)
+                        {
+                            break;
+                        }
                     }
                 }
                 xPositionObstacle = xPositionObstacleChoice;
@@ -67,8 +71,10 @@ public class ObstacleSpawner : MonoBehaviour
                 {
                     PositionSpawnX = 4;
                 }
-
-                GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 1.28f, currentPositionObstacle + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+                Debug.Log(xPositionObstacleChoice);
+                GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, currentPositionObstacle + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+                newObstacle.AddComponent<Rigidbody>();
+                newObstacle.AddComponent<BoxCollider>();
                 obstaclesInstantied.Add(newObstacle);
             }
             currentPositionObstacle = currentPositionObstacle + emptinessBetweenObstacles;
