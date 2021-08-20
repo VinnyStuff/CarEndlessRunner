@@ -26,7 +26,7 @@ public class Obstacle : MonoBehaviour
     {
         if (CanAccelerate == true)
         {
-            //rb.velocity = Vector3.forward * speed;
+            rb.velocity = Vector3.forward * speed;
         }
     }
     private void OnCollisionEnter(Collision collision)
