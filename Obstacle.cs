@@ -5,10 +5,18 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public Rigidbody rb;
-    public int speed;
+    public float speed;
+    public bool CanAccelerate;
     // Start is called before the first frame update
     void Start()
     {
+        CanAccelerate = false;
+        gameObject.AddComponent<Rigidbody>();
+        gameObject.AddComponent<BoxCollider>();
+        for (int x = 0; x < gameObject.GetComponentsInChildren<Transform>().Length - 1; x++)
+        {
+            gameObject.transform.GetChild(x).gameObject.AddComponent<BoxCollider>();
+        }
         speed = Random.Range(8, 11);
         rb = GetComponent<Rigidbody>();
     }
@@ -16,6 +24,13 @@ public class Obstacle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector3.forward * speed;
+        if (CanAccelerate == true)
+        {
+            //rb.velocity = Vector3.forward * speed;
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        CanAccelerate = true;
     }
 }

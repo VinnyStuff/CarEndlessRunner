@@ -14,7 +14,7 @@ public class StreetSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        numberOfStreets = 2;
+        numberOfStreets = 4;
         offset = 0;
         for (int i = 0; i < numberOfStreets; i++)
         {

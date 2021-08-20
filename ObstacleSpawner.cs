@@ -9,14 +9,15 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject player; //player position = 0
     public List<GameObject> obstaclesInstantied;
     public int emptinessBetweenObstacles;
-    public int currentPositionObstacle;
+    public int cameraView;
+    public float currentPositionObstacle;
     private int xPositionObstacle;
-    private int numberOfLines = 5;
+    private int numberOfLines = 3;
 
     public void Start()
     {
-        //speedFactor = 1;
         emptinessBetweenObstacles = 20;
+        cameraView = 10;
         for (int i = 0; i < numberOfLines; i++)
         {
             SpawnObstacles();
@@ -24,14 +25,18 @@ public class ObstacleSpawner : MonoBehaviour
     }
     public void Update()
     {
-        SpawnObstacles();
         DestroyTheObstacles();
+        if (player.transform.position.z >= currentPositionObstacle - (numberOfLines * numberOfLines - 1))
+        {
+            SpawnObstacles();
+            SpawnObstacles();
+        }
     }
     public void DestroyTheObstacles()
     {
         for (int i = 0; i < obstaclesInstantied.Count; i++)
         {
-            if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + emptinessBetweenObstacles)
+            if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + cameraView)
             {
                 Destroy(obstaclesInstantied[i]);
                 obstaclesInstantied.Remove(obstaclesInstantied[i]);
@@ -40,44 +45,40 @@ public class ObstacleSpawner : MonoBehaviour
     }
     public void SpawnObstacles() //and recycle
     {
-        if (player.transform.position.z >= currentPositionObstacle - (numberOfLines * numberOfLines - 1))
+        for (int i = 0; i < 2; i++)
         {
-            for (int i = 0; i < 2; i++)
+            int currentObstacle = Random.Range(0, obstacles.Length - 1);
+            int xPositionObstacleChoice = Random.Range(0, 3);
+            if (xPositionObstacleChoice == xPositionObstacle)
             {
-                int currentObstacle = Random.Range(0, obstacles.Length - 1);
-                int xPositionObstacleChoice = Random.Range(0, 3);
-                if (xPositionObstacleChoice == xPositionObstacle)
+                while (true)
                 {
-                    while (true)
+                    xPositionObstacleChoice = Random.Range(0, 3);
+                    if (xPositionObstacleChoice != xPositionObstacle)
                     {
-                        xPositionObstacleChoice = Random.Range(0, 3);
-                        if (xPositionObstacleChoice != xPositionObstacle)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
-                xPositionObstacle = xPositionObstacleChoice;
-                int PositionSpawnX = 0;
-                if (xPositionObstacle == 0)
-                {
-                    PositionSpawnX = -4;
-                }
-                else if (xPositionObstacle == 1)
-                {
-                    PositionSpawnX = 0;
-                }
-                else if (xPositionObstacle == 2)
-                {
-                    PositionSpawnX = 4;
-                }
-                Debug.Log(xPositionObstacleChoice);
-                GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, currentPositionObstacle + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
-                newObstacle.AddComponent<Rigidbody>();
-                newObstacle.AddComponent<BoxCollider>();
-                obstaclesInstantied.Add(newObstacle);
             }
-            currentPositionObstacle = currentPositionObstacle + emptinessBetweenObstacles;
+            xPositionObstacle = xPositionObstacleChoice;
+            int PositionSpawnX = 0;
+            if (xPositionObstacle == 0)
+            {
+                PositionSpawnX = -4;
+            }
+            else if (xPositionObstacle == 1)
+            {
+                PositionSpawnX = 0;
+            }
+            else if (xPositionObstacle == 2)
+            {
+                PositionSpawnX = 4;
+            }
+            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, currentPositionObstacle + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+            newObstacle.AddComponent<Obstacle>();
+            newObstacle.GetComponent<Obstacle>().speed = player.GetComponent<Player>().currentSpeed;
+            obstaclesInstantied.Add(newObstacle);
         }
+        currentPositionObstacle = currentPositionObstacle + emptinessBetweenObstacles;
     }
 }
