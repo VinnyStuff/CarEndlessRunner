@@ -13,18 +13,24 @@ public class ObstacleSpawner : MonoBehaviour
     public float currentPositionObstacle;
     private int xPositionObstacle;
     private int numberOfLines = 3;
+
     public void Start()
     {
         emptinessBetweenObstacles = 20;
         cameraView = 10;
         for (int i = 0; i < numberOfLines; i++)
         {
-            SpawnObstacles(currentPositionObstacle);
+            SpawnObstacles();
         }
     }
     public void Update()
     {
         DestroyTheObstacles();
+        if (player.transform.position.z >= currentPositionObstacle - (numberOfLines * numberOfLines - 1))
+        {
+            SpawnObstacles();
+            SpawnObstacles();
+        }
     }
     public void DestroyTheObstacles()
     {
@@ -32,20 +38,12 @@ public class ObstacleSpawner : MonoBehaviour
         {
             if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + cameraView)
             {
-                for (int x = 0; x < 2; x++)
-                {
-                    Destroy(obstaclesInstantied[i]);
-                    obstaclesInstantied.Remove(obstaclesInstantied[i]);
-
-                    if (x == 1)
-                    {
-                        SpawnObstacles(obstaclesInstantied[i].transform.position.z + emptinessBetweenObstacles);
-                    }
-                }
+                Destroy(obstaclesInstantied[i]);
+                obstaclesInstantied.Remove(obstaclesInstantied[i]);
             }
         }
     }
-    public void SpawnObstacles(float spawnPosition) //and recycle
+    public void SpawnObstacles() //and recycle
     {
         for (int i = 0; i < 2; i++)
         {
@@ -76,7 +74,7 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 PositionSpawnX = 4;
             }
-            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, spawnPosition + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, currentPositionObstacle + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
             newObstacle.AddComponent<Obstacle>();
             newObstacle.GetComponent<Obstacle>().speed = player.GetComponent<Player>().currentSpeed;
             obstaclesInstantied.Add(newObstacle);
