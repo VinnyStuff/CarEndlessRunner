@@ -5,73 +5,83 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public float speed;
-    public float positionY;
+    public float position_y;
     // Start is called before the first frame update
     void Start()
     {
         GetTheGameObjectName();
-        gameObject.transform.position = new Vector3(0, positionY, 0);
-
-        gameObject.AddComponent<BoxCollider>();
-        speed = Random.Range(8, 11);
-        //transform.rotation = Quaternion.Euler(0, 180, 55);
-        //gameObject.transform.Rotate(0, 0, rotateForce * Time.deltaTime);
+        SetColorObstacle();
+        speed = Random.Range(10, 16);
+        gameObject.transform.position = new Vector3(transform.position.x, position_y, transform.position.z); //set the right y value
     }
-
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+        ObstacleMovement();
         WheelsRotationAnimation();
+    }
+    public void ObstacleMovement()
+    {
+        transform.Translate((Vector3.right * speed) * Time.deltaTime);
+    }
+    public void SetColorObstacle()
+    {
+        if (gameObject.GetComponent<Renderer>().material.name.Contains("Car_Paint"))
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+        }
     }
     public void WheelsRotationAnimation()
     {
         for (int x = 0; x < gameObject.GetComponentsInChildren<Transform>().Length - 1; x++)
         {
-            gameObject.transform.GetChild(x).gameObject.transform.Rotate(0, 0, (-speed * 10) * Time.deltaTime);
+            if (gameObject.transform.GetChild(x).gameObject.name.Contains("Wheel"))
+            {
+                gameObject.transform.GetChild(x).gameObject.transform.Rotate(0, 0, (-speed * 10) * Time.deltaTime);
+            }
         }
     }
-    public void GetTheGameObjectName()
+    public void GetTheGameObjectName() 
     {       
         if (gameObject.name.Contains("Car_1"))
         {
-            positionY = 0.86f;
+            position_y = 0.86f;
         }
         if (gameObject.name.Contains("Car_2"))
         {
-            positionY = 0.77f;
+            position_y = 0.77f;
         }
         if (gameObject.name.Contains("Car_3"))
         {
-            positionY = 0.8f;
+            position_y = 0.8f;
         }        
         if (gameObject.name.Contains("Car_4"))
         {
-            positionY = 1.273f;
+            position_y = 1.273f;
         }        
         if (gameObject.name.Contains("Car_5"))
         {
-            positionY = 1f;
+            position_y = 1f;
         }        
         if (gameObject.name.Contains("Car_6"))
         {
-            positionY = 0.87f;
+            position_y = 0.87f;
         }
         if (gameObject.name.Contains("Bus"))
         {
-            positionY = 1.64f;
+            position_y = 1.64f;
         }
         if (gameObject.name.Contains("Police"))
         {
-            positionY = 0.8f;
+            position_y = 0.8f;
         }        
         if (gameObject.name.Contains("Truck_1"))
         {
-            positionY = 2f;
+            position_y = 2f;
         }        
         if (gameObject.name.Contains("Truck_2"))
         {
-            positionY = 1.8f;
+            position_y = 1.8f;
         }
     }
 }
