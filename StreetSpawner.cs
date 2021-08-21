@@ -15,7 +15,7 @@ public class StreetSpawner : MonoBehaviour
     void Start()
     {
         streetSize = 60;
-        numberOfStreets = 4;
+        numberOfStreets = 3;
         offset = 0;
         for (int i = 0; i < numberOfStreets; i++)
         {
@@ -26,7 +26,7 @@ public class StreetSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = offset - 80;
+        float distance = offset - (streetSize * (numberOfStreets - 1));
         if (player.position.z > distance)
         {
             RecycleStreet(instantiedStreet[streetIndex]);
