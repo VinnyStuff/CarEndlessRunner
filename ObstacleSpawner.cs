@@ -77,7 +77,7 @@ public class ObstacleSpawner : MonoBehaviour
                 obstaclesInstantied.Remove(obstaclesInstantied[i]);
                 destroyIndex++;
 
-                if (destroyIndex >= 2)
+                if (destroyIndex >= 2) // spawn new obstacles
                 {
                     destroyIndex = 0;
                     GetThePositionOffLatestObstacle();   
@@ -92,5 +92,6 @@ public class ObstacleSpawner : MonoBehaviour
             obstaclePositionZ.Add(obstaclesInstantied[i].transform.position.z);
         }
         SpawnObstacles(obstaclePositionZ.Max());
+        obstaclePositionZ.Clear();
     }
 }
