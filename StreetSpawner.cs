@@ -10,10 +10,11 @@ public class StreetSpawner : MonoBehaviour
     public Transform player;
     public int offset;
     public int numberOfStreets;
-    public int test;
+    public int streetSize;
     // Start is called before the first frame update
     void Start()
     {
+        streetSize = 60;
         numberOfStreets = 4;
         offset = 0;
         for (int i = 0; i < numberOfStreets; i++)
@@ -39,12 +40,12 @@ public class StreetSpawner : MonoBehaviour
     {
         GameObject streetnstantied = Instantiate(street, new Vector3(0, 0, offset), transform.rotation * Quaternion.Euler(0, 90, 0));
         instantiedStreet.Add(streetnstantied);
-        offset += 60;
+        offset += streetSize;
     }
     public void RecycleStreet(GameObject streetNewPosition)
     {
         streetNewPosition.transform.position = new Vector3(0, 0, offset);
         streetIndex += 1;
-        offset += 60;
+        offset += streetSize;
     }
 }

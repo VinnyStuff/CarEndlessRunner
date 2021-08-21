@@ -13,8 +13,10 @@ public class ObstacleSpawner : MonoBehaviour
     public float currentPositionObstacle;
     private int xPositionObstacle;
     private int numberOfLines = 3;
+    public int recycleCounter;
     public void Start()
     {
+        recycleCounter = 0;
         emptinessBetweenObstacles = 20;
         cameraView = 10;
         for (int i = 0; i < numberOfLines; i++)
@@ -32,15 +34,14 @@ public class ObstacleSpawner : MonoBehaviour
         {
             if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + cameraView)
             {
-                for (int x = 0; x < 2; x++)
-                {
-                    Destroy(obstaclesInstantied[i]);
-                    obstaclesInstantied.Remove(obstaclesInstantied[i]);
+                Destroy(obstaclesInstantied[i]);
+                obstaclesInstantied.Remove(obstaclesInstantied[i]);
+                recycleCounter++;
 
-                    if (x == 1)
-                    {
-                        SpawnObstacles(obstaclesInstantied[i].transform.position.z + emptinessBetweenObstacles);
-                    }
+                if (recycleCounter == 2)
+                {
+                    recycleCounter = 0;
+                    SpawnObstacles(obstaclesInstantied[i].transform.position.z + emptinessBetweenObstacles);
                 }
             }
         }
