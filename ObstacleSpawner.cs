@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    //public float speedFactor;
     public GameObject[] obstacles;
     public GameObject player; //player position = 0
     public List<GameObject> obstaclesInstantied;
+    public List<float> obstaclePositionZ = new List<float>();
     public int emptinessBetweenObstacles;
     public int cameraView;
     public float currentPositionObstacle;
     private int xPositionObstacle;
-    private int numberOfLines = 3;
-    public int recycleCounter;
+    public int numberOfLines;
+    public int destroyIndex;
     public void Start()
     {
-        recycleCounter = 0;
+        numberOfLines = 3;
+        destroyIndex = 0;
         emptinessBetweenObstacles = 20;
         cameraView = 10;
         for (int i = 0; i < numberOfLines; i++)
@@ -24,29 +26,11 @@ public class ObstacleSpawner : MonoBehaviour
             SpawnObstacles(currentPositionObstacle);
         }
     }
-    public void Update()
+    public void FixedUpdate()
     {
         DestroyTheObstacles();
     }
-    public void DestroyTheObstacles()
-    {
-        for (int i = 0; i < obstaclesInstantied.Count; i++)
-        {
-            if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + cameraView)
-            {
-                Destroy(obstaclesInstantied[i]);
-                obstaclesInstantied.Remove(obstaclesInstantied[i]);
-                recycleCounter++;
-
-                if (recycleCounter == 2)
-                {
-                    recycleCounter = 0;
-                    SpawnObstacles(obstaclesInstantied[i].transform.position.z + emptinessBetweenObstacles);
-                }
-            }
-        }
-    }
-    public void SpawnObstacles(float spawnPosition) //and recycle
+    public void SpawnObstacles(float spawnPosition)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -79,9 +63,34 @@ public class ObstacleSpawner : MonoBehaviour
             }
             GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, spawnPosition + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
             newObstacle.AddComponent<Obstacle>();
-            newObstacle.GetComponent<Obstacle>().speed = player.GetComponent<Player>().currentSpeed;
             obstaclesInstantied.Add(newObstacle);
         }
         currentPositionObstacle = currentPositionObstacle + emptinessBetweenObstacles;
+    }
+    public void DestroyTheObstacles()
+    {
+        for (int i = 0; i < obstaclesInstantied.Count; i++)
+        {
+            if (player.transform.position.z >= obstaclesInstantied[i].transform.position.z + cameraView)
+            {
+                Destroy(obstaclesInstantied[i]);
+                obstaclesInstantied.Remove(obstaclesInstantied[i]);
+                destroyIndex++;
+
+                if (destroyIndex >= 2)
+                {
+                    destroyIndex = 0;
+                    GetThePositionOffLatestObstacle();   
+                }
+            }
+        }
+    }
+    public void GetThePositionOffLatestObstacle() //and spawn the new obstacles
+    {
+        for (int i = 0; i < obstaclesInstantied.Count; i++)
+        {
+            obstaclePositionZ.Add(obstaclesInstantied[i].transform.position.z);
+        }
+        SpawnObstacles(obstaclePositionZ.Max());
     }
 }
