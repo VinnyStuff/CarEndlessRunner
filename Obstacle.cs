@@ -22,7 +22,7 @@ public class Obstacle : MonoBehaviour
     }
     public void ObstacleMovement()
     {
-        transform.Translate((Vector3.right * speed) * Time.deltaTime);
+        transform.Translate(Vector3.right * Time.deltaTime);
     }
     public void SetColorObstacle()
     {
