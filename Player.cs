@@ -181,4 +181,12 @@ public class Player : MonoBehaviour
             playerIsDead = true;
         }
     }
+    public void Right()
+    {
+        ChangeLane(4);
+    }
+    public void Left()
+    {
+        ChangeLane(-4);
+    }
 }
