@@ -39,9 +39,17 @@ public class ScenerySpawner : MonoBehaviour
         float distance = offset - (ScenerySize * (numberOfscenery - 1));
         if (player.position.z > distance)
         {
-            RecycleScenery(instantiedScenary[scenaryIndex]);
+            int canRecycle = Random.Range(0, 11);
+            if (canRecycle >= 5)
+            {
+                RecycleScenery(instantiedScenary[scenaryIndex], false);
+            }
+            else
+            {
+                RecycleScenery(instantiedScenary[scenaryIndex], true);
+            }
         }
-        if (scenaryIndex > instantiedScenary.Count - 1)
+        if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
         {
             scenaryIndex = 0;
         }
@@ -52,10 +60,17 @@ public class ScenerySpawner : MonoBehaviour
         instantiedScenary.Add(streetnstantied);
         offset += ScenerySize;
     }
-    public void RecycleScenery(GameObject streetNewPosition)
+    public void RecycleScenery(GameObject streetNewPosition, bool canDestroy)
     {
-        streetNewPosition.transform.position = new Vector3(11, 0, offset);
-        scenaryIndex += 1;
-        offset += ScenerySize;
+        if (canDestroy == true)
+        {
+            
+        }
+        else
+        {
+            streetNewPosition.transform.position = new Vector3(11, 0, offset);
+            scenaryIndex += 1;
+            offset += ScenerySize;
+        }
     }
 }
