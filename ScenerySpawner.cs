@@ -54,7 +54,7 @@ public class ScenerySpawner : MonoBehaviour
             scenaryIndex = 0;
         }
     }
-    public void SpawnScenery(int scenerySelect) // and recycle
+    public void SpawnScenery(int scenerySelect)
     {
         GameObject streetnstantied = Instantiate(scenary[scenerySelect], new Vector3(11, 0, offset), transform.rotation);
         instantiedScenary.Add(streetnstantied);
