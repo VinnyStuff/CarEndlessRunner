@@ -67,16 +67,13 @@ public class ScenerySpawner : MonoBehaviour
             instantiedScenary[scenaryIndex] = null;
 
             GameObject streetnstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
+
+            instantiedScenary[scenaryIndex] = streetnstantied;
+
+            Destroy(streetNewPosition);
+
             scenaryIndex += 1;
             offset += ScenerySize;
-            for (int i = 0; i < instantiedScenary.Count - 1; i++)
-            {
-                if (instantiedScenary[i] == null)
-                {
-                    instantiedScenary[i] = streetnstantied;
-                }
-            }
-            Destroy(streetNewPosition);
         }
         else
         {
