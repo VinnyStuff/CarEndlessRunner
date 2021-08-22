@@ -21,9 +21,11 @@ public class Player : MonoBehaviour
     public Camera playerCamera;
     public Vector3 playerCameraStartPosition;
     //
-    public bool canRotate;
+    public bool canRotateRight;
+    public bool canRotateLeft;
     void Start()
     {
+        back = false;
         playerCameraStartPosition = playerCamera.transform.localPosition;
         nitroDuration = 0;
         SelectCar();
@@ -31,8 +33,10 @@ public class Player : MonoBehaviour
         playerIsDead = false;
         currentSpeed = speed;
     }
+    public bool back;
     private void Update()
     {
+        Debug.Log(cars[0].transform.localRotation.eulerAngles.y);
         PlayerMovement();
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -41,14 +45,35 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))//right
         {
-            //canRotate = true;
-        }
-        if (canRotate)
+            canRotateRight = true;
+        }        
+        if (Input.GetKeyDown(KeyCode.A))//right
         {
-            cars[0].transform.Rotate(0, 80 * Time.deltaTime, 0);
-            if (cars[0].transform.localRotation.eulerAngles.y >= 40)
+            canRotateLeft = true;
+        }
+        if (canRotateRight)
+        {
+            if (cars[0].transform.localRotation.eulerAngles.y <= 40 && back == false)
             {
-                canRotate = false;
+                cars[0].transform.Rotate(0, 160 * Time.deltaTime, 0);
+            }
+            else
+            {
+                back = true;
+            }
+            if (back)
+            {
+                cars[0].transform.Rotate(0, -160 * Time.deltaTime, 0);
+            }
+            if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 300 && cars[0].transform.localRotation.eulerAngles.y <= 320)
+            {
+                cars[0].transform.Rotate(0, 160 * Time.deltaTime, 0);
+            }
+            if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 355)
+            {
+                cars[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
+                canRotateRight = false;
+                back = false;
             }
         }
         CameraFollowPlayer();
