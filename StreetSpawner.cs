@@ -26,6 +26,10 @@ public class StreetSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckCanRecycleStreet();
+    }
+    public void CheckCanRecycleStreet()
+    {
         float distance = offset - (streetSize * (numberOfStreets - 1));
         if (player.position.z > distance)
         {
