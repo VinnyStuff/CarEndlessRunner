@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private int currentLane = 4;
     private Vector3 verticalTargetPosition;
-    public bool hasHit;
+    public bool playerIsDead;
     public List<GameObject> cars;
     public float velocityIncreasingPerSecond;
     //NITRO
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         nitroDuration = 0;
         SelectCar();
         rb = GetComponent<Rigidbody>();
-        hasHit = false;
+        playerIsDead = false;
         currentSpeed = speed;
     }
     private void Update()
@@ -51,13 +51,17 @@ public class Player : MonoBehaviour
                 canRotate = false;
             }
         }
+        CameraFollowPlayer();
     }
     public void FixedUpdate()
     {
         IncreasePlayerSpeedOvertime();
         TurnOnNitro();
     }
-
+    public void CameraFollowPlayer()
+    {
+        playerCamera.transform.position = new Vector3(0, 5.36f, gameObject.transform.position.z - 9.8f);
+    }
     public void SelectCar()
     {
         for (int i = cars.Count - 1; i >= 0; i--)
@@ -76,7 +80,7 @@ public class Player : MonoBehaviour
     }
     public void IncreasePlayerSpeedOvertime()
     {
-        if (canUseNitro == false)
+        if (canUseNitro == false && playerIsDead == false)
         {
             currentSpeed = currentSpeed + (velocityIncreasingPerSecond / 50);
         }
@@ -123,13 +127,14 @@ public class Player : MonoBehaviour
     }
     void PlayerMovement()
     {
-        rb.velocity = Vector3.forward * currentSpeed;
 
         Vector3 targetPosition = new Vector3(verticalTargetPosition.x, verticalTargetPosition.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneSpeed * Time.deltaTime);
 
-        if (hasHit == false)
+        if (playerIsDead == false)
         {
+            rb.velocity = Vector3.forward * currentSpeed;
+
             transform.position = new Vector3(transform.position.x, 0.07f, transform.position.z);
             if (Input.GetKeyDown(KeyCode.A))//left
             {
@@ -142,5 +147,13 @@ public class Player : MonoBehaviour
         }
         //transform.rotation = Quaternion.Euler(0, 180, 115);
         //gameObject.transform.Rotate(0, 0, rotateForce * Time.deltaTime);
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        Obstacle obstacle = collision.transform.GetComponent<Obstacle>();
+        if (obstacle)
+        {
+            playerIsDead = true;
+        }
     }
 }

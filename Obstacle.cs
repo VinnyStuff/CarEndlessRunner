@@ -6,9 +6,15 @@ public class Obstacle : MonoBehaviour
 {
     public float speed;
     public float position_y;
+    public bool canMove;
+    public Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
+        canMove = true;
+        gameObject.AddComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
         GetTheGameObjectName();
         SetColorObstacle();
         speed = Random.Range(10, 16);
@@ -22,7 +28,19 @@ public class Obstacle : MonoBehaviour
     }
     public void ObstacleMovement()
     {
-        transform.Translate(Vector3.right * Time.deltaTime);
+        if (canMove == true)
+        {
+            rb.velocity = Vector3.forward * speed;
+        }
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        Player player = collision.transform.GetComponent<Player>();
+        if (player)
+        {
+            canMove = false;
+            rb.useGravity = true;
+        }
     }
     public void SetColorObstacle()
     {
@@ -37,7 +55,7 @@ public class Obstacle : MonoBehaviour
         {
             if (gameObject.transform.GetChild(x).gameObject.name.Contains("Wheel"))
             {
-                gameObject.transform.GetChild(x).gameObject.transform.Rotate(0, 0, (-speed * 10) * Time.deltaTime);
+                gameObject.transform.GetChild(x).gameObject.transform.Rotate(0, 0, (-speed * speed) * Time.deltaTime);
             }
         }
     }

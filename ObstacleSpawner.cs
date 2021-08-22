@@ -61,7 +61,7 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 PositionSpawnX = 4;
             }
-            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 2f, spawnPosition + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 0, spawnPosition + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
             newObstacle.AddComponent<Obstacle>();
             obstaclesInstantied.Add(newObstacle);
         }
