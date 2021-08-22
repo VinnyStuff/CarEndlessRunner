@@ -36,7 +36,6 @@ public class Player : MonoBehaviour
     public bool back;
     private void Update()
     {
-        Debug.Log(cars[0].transform.localRotation.eulerAngles.y);
         PlayerMovement();
         if (Input.GetKeyDown(KeyCode.W))
         {

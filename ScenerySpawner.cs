@@ -4,17 +4,58 @@ using UnityEngine;
 
 public class ScenerySpawner : MonoBehaviour
 {
+    //scenery = Pieces of the scenery
     public GameObject[] scenary;
-    public List<GameObject> instantiedScenary
+    public List<GameObject> instantiedScenary;
+    public int scenaryIndex;
+    public Transform player;
+    public int offset;
+    public int numberOfscenery;
+    public int ScenerySize;
     // Start is called before the first frame update
     void Start()
     {
-        
+        ScenerySize = 60;
+        numberOfscenery = 3;
+        offset = 0;
+        SelectingTheFirstScenerysPieces();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        CheckCanRecycleScenery();
+    }
+    public void SelectingTheFirstScenerysPieces()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            int scenerySelect = Random.Range(0, scenary.Length);
+            SpawnScenery(scenerySelect);
+        }
+    }
+    public void CheckCanRecycleScenery()
+    {
+        float distance = offset - (ScenerySize * (numberOfscenery - 1));
+        if (player.position.z > distance)
+        {
+            RecycleScenery(instantiedScenary[scenaryIndex]);
+        }
+        if (scenaryIndex > instantiedScenary.Count - 1)
+        {
+            scenaryIndex = 0;
+        }
+    }
+    public void SpawnScenery(int scenerySelect) // and recycle
+    {
+        GameObject streetnstantied = Instantiate(scenary[scenerySelect], new Vector3(11, 0, offset), transform.rotation);
+        instantiedScenary.Add(streetnstantied);
+        offset += ScenerySize;
+    }
+    public void RecycleScenery(GameObject streetNewPosition)
+    {
+        streetNewPosition.transform.position = new Vector3(11, 0, offset);
+        scenaryIndex += 1;
+        offset += ScenerySize;
     }
 }
