@@ -5,9 +5,9 @@ using UnityEngine;
 public class ScenerySpawner : MonoBehaviour
 {
     //scenery = Pieces of the scenery
-    public GameObject[] scenaryTwoSides;
-    public GameObject[] scenaryRightSide;
-    public GameObject[] scenaryLeftSide;
+    public GameObject[] scenaryTwoSides; // position x = 0
+    public GameObject[] scenaryRightSide; // position x = 11
+    public GameObject[] scenaryLeftSide; // position x = -11
     public List<GameObject> instantiedScenary;
     public int scenaryIndex;
     public Transform player;
@@ -27,20 +27,23 @@ public class ScenerySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //CheckCanRecycleScenery();
+        CheckCanRecycleScenery();
     }
     public void SelectingTheFirstScenerysPieces()
     {
-        int selectCurrentScenery = Random.Range(0, 11);
-        if (selectCurrentScenery >= 5)//spawn two sides
+        for (int i = 0; i < 3; i++)
         {
-            SpawnScenery(scenaryTwoSides, Random.Range(0, scenaryTwoSides.Length), 11, false);
-        }
-        else //spawn one side
-        {
-            SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
+            int selectCurrentScenery = Random.Range(0, 11);
+            if (selectCurrentScenery >= 5)//spawn two sides
+            {
+                SpawnScenery(scenaryTwoSides, Random.Range(0, scenaryTwoSides.Length), 0, true);
+            }
+            else //spawn one side
+            {
+                SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
 
-            SpawnScenery(scenaryLeftSide, Random.Range(0, scenaryLeftSide.Length), -11, true);
+                SpawnScenery(scenaryLeftSide, Random.Range(0, scenaryLeftSide.Length), -11, true);
+            }
         }
     }
     public void SpawnScenery(GameObject[] currentList,int scenerySelect, int positionX, bool canChangeOffset)
@@ -57,7 +60,7 @@ public class ScenerySpawner : MonoBehaviour
         float distance = offset - (ScenerySize * (numberOfscenery - 1));
         if (player.position.z > distance)
         {
-            int canRecycle = Random.Range(0, 11);
+            int canRecycle = Random.Range(0, 4);
             if (canRecycle >= 5)
             {
                 RecycleScenery(instantiedScenary[scenaryIndex], false);
@@ -75,21 +78,36 @@ public class ScenerySpawner : MonoBehaviour
     public void RecycleScenery(GameObject sceneryPiece, bool destroySceneryPiece)
     {
         if (destroySceneryPiece == true)
-        {
-            Destroy(sceneryPiece);
-            instantiedScenary[scenaryIndex] = null;
+        {//TENTAR NO MOMENTO APENAS APAGAR
+            if (sceneryPiece.transform.position.x == 0)//is a two side
+            {
+                Destroy(sceneryPiece);
+                instantiedScenary[scenaryIndex] = null;
+                scenaryIndex += 1;
+                offset += ScenerySize;
+            }
+            else if (sceneryPiece.transform.position.x == 11)//is a right side
+            {
+                Destroy(sceneryPiece);
+                instantiedScenary[scenaryIndex] = null;
+                scenaryIndex += 1;
 
-            //GameObject streetinstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
-            //instantiedScenary[scenaryIndex] = streetinstantied;
+                Destroy(instantiedScenary[scenaryIndex]);
+                instantiedScenary[scenaryIndex] = null;
+                scenaryIndex += 1;
+                offset += ScenerySize;
+            }
+            else if (sceneryPiece.transform.position.x == -11)//is a left side
+            {
+                Destroy(sceneryPiece);
+                instantiedScenary[scenaryIndex] = null;
+                scenaryIndex += 1;
 
-            scenaryIndex += 1;
-            offset += ScenerySize;
-        }
-        else
-        {
-            sceneryPiece.transform.position = new Vector3(11, 0, offset);
-            scenaryIndex += 1;
-            offset += ScenerySize;
+                Destroy(instantiedScenary[scenaryIndex]);
+                instantiedScenary[scenaryIndex] = null;
+                scenaryIndex += 1;
+                offset += ScenerySize;
+            }
         }
     }
 }
