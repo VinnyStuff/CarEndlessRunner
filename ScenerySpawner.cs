@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ScenerySpawner : MonoBehaviour
 {
+    //
     //scenery = Pieces of the scenery
     public GameObject[] scenary;
     public List<GameObject> instantiedScenary;
