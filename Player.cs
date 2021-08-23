@@ -44,17 +44,17 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))//right
         {
-            canRotateRight = true;
+            //canRotateRight = true;
         }        
         if (Input.GetKeyDown(KeyCode.A))//right
         {
-            canRotateLeft = true;
+            //canRotateLeft = true;
         }
         if (canRotateRight)
         {
             if (cars[0].transform.localRotation.eulerAngles.y <= 40 && back == false)
             {
-                cars[0].transform.Rotate(0, 160 * Time.deltaTime, 0);
+                cars[0].transform.Rotate(0, 40 * Time.deltaTime, 0);
             }
             else
             {
@@ -62,11 +62,11 @@ public class Player : MonoBehaviour
             }
             if (back)
             {
-                cars[0].transform.Rotate(0, -160 * Time.deltaTime, 0);
+                cars[0].transform.Rotate(0, -40 * Time.deltaTime, 0);
             }
             if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 300 && cars[0].transform.localRotation.eulerAngles.y <= 320)
             {
-                cars[0].transform.Rotate(0, 160 * Time.deltaTime, 0);
+                cars[0].transform.Rotate(0, 40 * Time.deltaTime, 0);
             }
             if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 355)
             {
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
     }
     public void CameraFollowPlayer()
     {
-        playerCamera.transform.position = new Vector3(0, 5.36f, gameObject.transform.position.z - 9.8f);
+        playerCamera.transform.position = new Vector3(gameObject.transform.position.x * 0.25f, 5.36f, gameObject.transform.position.z - 9.8f) ;
     }
     public void SelectCar()
     {
