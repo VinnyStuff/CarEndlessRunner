@@ -34,6 +34,12 @@ public class ScenerySpawner : MonoBehaviour
             SpawnScenery(scenerySelect);
         }
     }
+    public void SpawnScenery(int scenerySelect)
+    {
+        GameObject streetnstantied = Instantiate(scenary[scenerySelect], new Vector3(11, 0, offset), transform.rotation);
+        instantiedScenary.Add(streetnstantied);
+        offset += ScenerySize;
+    }
     public void CheckCanRecycleScenery()
     {
         float distance = offset - (ScenerySize * (numberOfscenery - 1));
@@ -54,30 +60,22 @@ public class ScenerySpawner : MonoBehaviour
             scenaryIndex = 0;
         }
     }
-    public void SpawnScenery(int scenerySelect)
+    public void RecycleScenery(GameObject sceneryPiece, bool destroySceneryPiece)
     {
-        GameObject streetnstantied = Instantiate(scenary[scenerySelect], new Vector3(11, 0, offset), transform.rotation);
-        instantiedScenary.Add(streetnstantied);
-        offset += ScenerySize;
-    }
-    public void RecycleScenery(GameObject streetNewPosition, bool canDestroy)
-    {
-        if (canDestroy == true)
+        if (destroySceneryPiece == true)
         {
+            Destroy(sceneryPiece);
             instantiedScenary[scenaryIndex] = null;
 
-            GameObject streetnstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
-
-            instantiedScenary[scenaryIndex] = streetnstantied;
-
-            Destroy(streetNewPosition);
+            GameObject streetinstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
+            instantiedScenary[scenaryIndex] = streetinstantied;
 
             scenaryIndex += 1;
             offset += ScenerySize;
         }
         else
         {
-            streetNewPosition.transform.position = new Vector3(11, 0, offset);
+            sceneryPiece.transform.position = new Vector3(11, 0, offset);
             scenaryIndex += 1;
             offset += ScenerySize;
         }
