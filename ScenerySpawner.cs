@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class ScenerySpawner : MonoBehaviour
 {
-    //
     //scenery = Pieces of the scenery
-    public GameObject[] scenary;
+    public GameObject[] scenaryTwoSides;
+    public GameObject[] scenaryRightSide;
+    public GameObject[] scenaryLeftSide;
     public List<GameObject> instantiedScenary;
     public int scenaryIndex;
     public Transform player;
     public int offset;
     public int numberOfscenery;
     public int ScenerySize;
+    public bool spawnOneSideScenery;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,21 +27,30 @@ public class ScenerySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckCanRecycleScenery();
+        //CheckCanRecycleScenery();
     }
     public void SelectingTheFirstScenerysPieces()
     {
-        for (int i = 0; i < 3; i++)
+        int selectCurrentScenery = Random.Range(0, 11);
+        if (selectCurrentScenery >= 5)//spawn two sides
         {
-            int scenerySelect = Random.Range(0, scenary.Length);
-            SpawnScenery(scenerySelect);
+            SpawnScenery(scenaryTwoSides, Random.Range(0, scenaryTwoSides.Length), 11, false);
+        }
+        else //spawn one side
+        {
+            SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
+
+            SpawnScenery(scenaryLeftSide, Random.Range(0, scenaryLeftSide.Length), -11, true);
         }
     }
-    public void SpawnScenery(int scenerySelect)
+    public void SpawnScenery(GameObject[] currentList,int scenerySelect, int positionX, bool canChangeOffset)
     {
-        GameObject streetnstantied = Instantiate(scenary[scenerySelect], new Vector3(11, 0, offset), transform.rotation);
+        GameObject streetnstantied = Instantiate(currentList[scenerySelect], new Vector3(positionX, 0, offset), transform.rotation);
         instantiedScenary.Add(streetnstantied);
-        offset += ScenerySize;
+        if (canChangeOffset == true)
+        {
+            offset += ScenerySize;
+        }
     }
     public void CheckCanRecycleScenery()
     {
@@ -68,8 +79,8 @@ public class ScenerySpawner : MonoBehaviour
             Destroy(sceneryPiece);
             instantiedScenary[scenaryIndex] = null;
 
-            GameObject streetinstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
-            instantiedScenary[scenaryIndex] = streetinstantied;
+            //GameObject streetinstantied = Instantiate(scenary[Random.Range(0, scenary.Length)], new Vector3(11, 0, offset), transform.rotation);
+            //instantiedScenary[scenaryIndex] = streetinstantied;
 
             scenaryIndex += 1;
             offset += ScenerySize;
