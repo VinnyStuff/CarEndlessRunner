@@ -63,7 +63,7 @@ public class ScenerySpawner : MonoBehaviour
             int canRecycle = Random.Range(0, 11);
             if (canRecycle >= 5)
             {
-                RecycleScenery(instantiedScenary[scenaryIndex], false);
+                RecycleScenery(instantiedScenary[scenaryIndex], true);//is false
             }
             else
             {
@@ -79,49 +79,7 @@ public class ScenerySpawner : MonoBehaviour
     {
         if (destroySceneryPiece == true)
         {
-            if (sceneryPiece.transform.position.x == 0)//is a two side
-            {
-                Destroy(sceneryPiece);
-                instantiedScenary[scenaryIndex] = null;
-
-                GameObject sceneryInstantied = Instantiate(scenaryTwoSides[Random.Range(0, scenaryTwoSides.Length)], new Vector3(0, 0, offset), transform.rotation);
-                instantiedScenary[scenaryIndex] = sceneryInstantied;
-
-                scenaryIndex += 1;
-                offset += scenerySize;
-            }
-            else if (sceneryPiece.transform.position.x == 11)//is a right side
-            {
-                int positionX = 11;
-                for (int i = 0; i < 2; i++)
-                {
-                    Destroy(instantiedScenary[scenaryIndex]);
-                    instantiedScenary[scenaryIndex] = null;
-
-                    GameObject sceneryInstantied = Instantiate(scenaryRightSide[Random.Range(0, scenaryRightSide.Length)], new Vector3(positionX, 0, offset), transform.rotation);
-                    instantiedScenary[scenaryIndex] = sceneryInstantied;
-
-                    scenaryIndex += 1;
-                    positionX = -11;
-                }
-                offset += scenerySize;
-            }
-            else if (sceneryPiece.transform.position.x == -11)//is a left side
-            {
-                int positionX = 11;
-                for (int i = 0; i < 2; i++)
-                {
-                    Destroy(instantiedScenary[scenaryIndex]);
-                    instantiedScenary[scenaryIndex] = null;
-
-                    GameObject sceneryInstantied = Instantiate(scenaryLeftSide[Random.Range(0, scenaryLeftSide.Length)], new Vector3(positionX, 0, offset), transform.rotation);
-                    instantiedScenary[scenaryIndex] = sceneryInstantied;
-
-                    scenaryIndex += 1;
-                    positionX = -11;
-                }
-                offset += scenerySize;
-            }
+            DestroyScenery(sceneryPiece);
         }
         else
         {
@@ -153,6 +111,39 @@ public class ScenerySpawner : MonoBehaviour
                 }
                 offset += scenerySize;
             }
+        }
+    }
+    public void DestroyScenery(GameObject sceneryToDestroy)//if scenery is overpast
+    {
+        if (sceneryToDestroy.transform.position.x == 0)//is a two side
+        {
+            Destroy(sceneryToDestroy);
+            instantiedScenary[scenaryIndex] = null;
+
+            scenaryIndex += 1;
+            offset += scenerySize;
+        }
+        else if (sceneryToDestroy.transform.position.x == 11)//is a right side
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Destroy(instantiedScenary[scenaryIndex]);
+                instantiedScenary[scenaryIndex] = null;
+
+                scenaryIndex += 1;
+            }
+            offset += scenerySize;
+        }
+        else if (sceneryToDestroy.transform.position.x == -11)//is a left side
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Destroy(instantiedScenary[scenaryIndex]);
+                instantiedScenary[scenaryIndex] = null;
+
+                scenaryIndex += 1;
+            }
+            offset += scenerySize;
         }
     }
 }

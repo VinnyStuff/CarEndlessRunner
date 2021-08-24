@@ -82,9 +82,15 @@ public class Player : MonoBehaviour
         IncreasePlayerSpeedOvertime();
         TurnOnNitro();
     }
+    public float virtualCameraX;
     public void CameraFollowPlayer()
     {
-        playerCamera.transform.position = new Vector3(gameObject.transform.position.x * 0.25f, 5.36f, gameObject.transform.position.z - 9.8f) ;
+        float playerPositionX = gameObject.transform.position.x;
+        virtualCameraX = (virtualCameraX * 0.9f) + (playerPositionX * 0.1f);
+        float cameraParallax = 0.5f;
+        float heightCamera = 5.36f;
+        float playerPositionZ = gameObject.transform.position.z - 9.8f;
+        playerCamera.transform.position = new Vector3(virtualCameraX * cameraParallax, heightCamera, playerPositionZ);
     }
     public void SelectCar()
     {
