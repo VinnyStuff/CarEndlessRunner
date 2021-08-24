@@ -40,26 +40,27 @@ public class ScenerySpawner : MonoBehaviour
         int selectCurrentBiome = Random.Range(0, numberOfBiomes);
         currentBiome = biomes[selectCurrentBiome];
 
-        if (currentBiome == "Florest")
+        if (currentBiome == "desert")
         {
             valueMinBiomeScenery = 0;
             valueMaxBiomeScenery = 3;
         }
-        else if (currentBiome == "Desert")
+        else if (currentBiome == "florest")
         {
-            valueMinBiomeScenery = 4;
+            valueMinBiomeScenery = 3;
             valueMaxBiomeScenery = 6;
         }        
-        else if (currentBiome == "Town")
+        else if (currentBiome == "town")
         {
-
+            valueMinBiomeScenery = 6;
+            valueMaxBiomeScenery = 9;
         }
 
         for (int i = 0; i < 3; i++)
         {
-            SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
+            SpawnScenery(scenaryRightSide, Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery), 11, false);
 
-            SpawnScenery(scenaryLeftSide, Random.Range(0, scenaryLeftSide.Length), -11, true);
+            SpawnScenery(scenaryLeftSide, Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery), -11, true);
         }
     }
     public void SpawnScenery(GameObject[] currentList,int scenerySelect, int positionX, bool canChangeOffset)
@@ -103,7 +104,12 @@ public class ScenerySpawner : MonoBehaviour
                 Destroy(instantiedScenary[scenaryIndex]);
                 instantiedScenary[scenaryIndex] = null;
 
-                GameObject sceneryInstantied = Instantiate(currentArray[Random.Range(0, currentArray.Length)], new Vector3(positionX, 0, offset), transform.rotation);
+                int random = Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery);
+                Debug.Log(valueMinBiomeScenery + "valueMinBiomeScenery");
+                Debug.Log(valueMaxBiomeScenery + "valueMaxBiomeScenery");
+                Debug.Log(random);
+
+                GameObject sceneryInstantied = Instantiate(currentArray[random], new Vector3(positionX, 0, offset), transform.rotation);
                 instantiedScenary[scenaryIndex] = sceneryInstantied;
 
                 scenaryIndex += 1;
