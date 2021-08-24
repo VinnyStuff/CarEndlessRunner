@@ -22,6 +22,7 @@ public class ScenerySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        changingBiome = false;
         numberOfBiomes = biomes.Length;
         scenerySize = 60;
         numberOfscenery = 3;
@@ -84,15 +85,33 @@ public class ScenerySpawner : MonoBehaviour
             }
             else if (canRecycle == 1)
             {
-                RecycleScenery(false);
+                if (changingBiome == false)
+                {
+                    RecycleScenery(false);
+                }
+                else
+                {
+                    RecycleScenery(true);
+                }
             }
             if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
             {
                 scenaryIndex = 0;
             }
+            if (changingBiome == true)
+            {
+                for (int i = 0; i < instantiedScenary.Count - 1; i++)
+                {
+                    if (!instantiedScenary[i].name.Contains(currentBiome))
+                    {
+                        return;
+                    }
+                }
+                changingBiome = false;
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             LoadNextBiome();
         }
@@ -101,7 +120,6 @@ public class ScenerySpawner : MonoBehaviour
     {
         if (destroySceneryPiece == true)
         {
-            Debug.Log("Spawn");
             int positionX = 11;
             GameObject[] currentArray = scenaryRightSide;
             for (int i = 0; i < 2; i++)
@@ -109,12 +127,7 @@ public class ScenerySpawner : MonoBehaviour
                 Destroy(instantiedScenary[scenaryIndex]);
                 instantiedScenary[scenaryIndex] = null;
 
-                int random = Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery);
-                Debug.Log(valueMinBiomeScenery + "valueMinBiomeScenery");
-                Debug.Log(valueMaxBiomeScenery + "valueMaxBiomeScenery");
-                Debug.Log(random);
-
-                GameObject sceneryInstantied = Instantiate(currentArray[random], new Vector3(positionX, 0, offset), transform.rotation);
+                GameObject sceneryInstantied = Instantiate(currentArray[Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery)], new Vector3(positionX, 0, offset), transform.rotation);
                 instantiedScenary[scenaryIndex] = sceneryInstantied;
 
                 scenaryIndex += 1;
@@ -126,7 +139,6 @@ public class ScenerySpawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("Recycle");
             int positionX = 11;
             for (int i = 0; i < 2; i++)
             {
@@ -151,6 +163,8 @@ public class ScenerySpawner : MonoBehaviour
         {
             currentBiome = biomes[0];
         }
+
+        changingBiome = true;
 
         if (currentBiome == "desert")
         {
