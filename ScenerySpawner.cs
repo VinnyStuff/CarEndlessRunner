@@ -13,7 +13,6 @@ public class ScenerySpawner : MonoBehaviour
     public int offset;
     public int numberOfscenery;
     public int scenerySize;
-    public bool spawnOneSideScenery;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,22 +47,21 @@ public class ScenerySpawner : MonoBehaviour
     }
     public void CheckCanRecycleScenery()
     {
-        if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
-        {
-            scenaryIndex = 0;
-        }
-
         float distance = offset - (scenerySize * (numberOfscenery - 1));
         if (player.position.z > distance)
         {
             int canRecycle = Random.Range(0, 2);
             if (canRecycle == 0)
             {
-                RecycleScenery(true);//is false
+                RecycleScenery(true);
             }
             else if (canRecycle == 1)
             {
-                RecycleScenery(true);
+                RecycleScenery(false);
+            }
+            if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
+            {
+                scenaryIndex = 0;
             }
         }
     }
@@ -71,6 +69,7 @@ public class ScenerySpawner : MonoBehaviour
     {
         if (destroySceneryPiece == true)
         {
+            Debug.Log("Spawn");
             int positionX = 11;
             GameObject[] currentArray = scenaryRightSide;
             for (int i = 0; i < 2; i++)
@@ -88,36 +87,17 @@ public class ScenerySpawner : MonoBehaviour
             }
             offset += scenerySize;
         }
-        /*else //dps pensar nisso
+        else
         {
-            if (sceneryPiece.transform.position.x == 0)//is a two side
+            Debug.Log("Recycle");
+            int positionX = 11;
+            for (int i = 0; i < 2; i++)
             {
-                sceneryPiece.transform.position = new Vector3(0, 0, offset);
+                instantiedScenary[scenaryIndex].transform.position = new Vector3(positionX, 0, offset);
                 scenaryIndex += 1;
-                offset += scenerySize;
+                positionX = -11;
             }
-            else if (sceneryPiece.transform.position.x == 11)//is a right side
-            {
-                int positionX = 11;
-                for (int i = 0; i < 2; i++)
-                {
-                    instantiedScenary[scenaryIndex].transform.position = new Vector3(positionX, 0, offset);
-                    scenaryIndex += 1;
-                    positionX = -11;
-                }
-                offset += scenerySize;
-            }
-            else if (sceneryPiece.transform.position.x == -11)//is a left side
-            {
-                int positionX = 11;
-                for (int i = 0; i < 2; i++)
-                {
-                    instantiedScenary[scenaryIndex].transform.position = new Vector3(positionX, 0, offset);
-                    scenaryIndex += 1;
-                    positionX = -11;
-                }
-                offset += scenerySize;
-            }
-        }*/
+            offset += scenerySize;
+        }
     }
 }
