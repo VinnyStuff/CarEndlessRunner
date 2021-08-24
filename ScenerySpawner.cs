@@ -91,6 +91,11 @@ public class ScenerySpawner : MonoBehaviour
                 scenaryIndex = 0;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            LoadNextBiome();
+        }
     }
     public void RecycleScenery(bool destroySceneryPiece)
     {
@@ -130,6 +135,37 @@ public class ScenerySpawner : MonoBehaviour
                 positionX = -11;
             }
             offset += scenerySize;
+        }
+    }
+    public void LoadNextBiome()
+    {
+        if (currentBiome == "desert")
+        {
+            currentBiome = biomes[1];
+        }
+        else if (currentBiome == "florest")
+        {
+            currentBiome = biomes[2];
+        }
+        else if (currentBiome == "town")
+        {
+            currentBiome = biomes[0];
+        }
+
+        if (currentBiome == "desert")
+        {
+            valueMinBiomeScenery = 0;
+            valueMaxBiomeScenery = 3;
+        }
+        else if (currentBiome == "florest")
+        {
+            valueMinBiomeScenery = 3;
+            valueMaxBiomeScenery = 6;
+        }
+        else if (currentBiome == "town")
+        {
+            valueMinBiomeScenery = 6;
+            valueMaxBiomeScenery = 9;
         }
     }
 }
