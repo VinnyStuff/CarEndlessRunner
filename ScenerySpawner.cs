@@ -57,6 +57,11 @@ public class ScenerySpawner : MonoBehaviour
     }
     public void CheckCanRecycleScenery()
     {
+        if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
+        {
+            scenaryIndex = 0;
+        }
+
         float distance = offset - (scenerySize * (numberOfscenery - 1));
         if (player.position.z > distance)
         {
@@ -70,18 +75,81 @@ public class ScenerySpawner : MonoBehaviour
                 RecycleScenery(instantiedScenary[scenaryIndex], true);
             }
         }
-        if (scenaryIndex > instantiedScenary.Count - 1) //reset path through array
-        {
-            scenaryIndex = 0;
-        }
     }
     public void RecycleScenery(GameObject sceneryPiece, bool destroySceneryPiece)
     {
         if (destroySceneryPiece == true)
         {
-            DestroyScenery(sceneryPiece);
+            int newScenery = Random.Range(0, 3);
+            if (sceneryPiece.transform.position.x == 0)//is a two side
+            {
+                Destroy(sceneryPiece);
+                instantiedScenary[scenaryIndex] = null;
+                //--------------------------- spawn new scenery
+                if (newScenery == 0) //two sides
+                {
+                    GameObject sceneryInstantied = Instantiate(scenaryTwoSides[Random.Range(0, scenaryTwoSides.Length)], new Vector3(0, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+                }
+                else if (newScenery == 1) //right sides
+                {
+                    GameObject sceneryInstantied = Instantiate(scenaryRightSide[Random.Range(0, scenaryRightSide.Length)], new Vector3(11, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+                    scenaryIndex += 1;
+
+                    sceneryInstantied = Instantiate(scenaryRightSide[Random.Range(0, scenaryRightSide.Length)], new Vector3(11, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+                }
+                else if (newScenery == 2) //Left side
+                {
+                    GameObject sceneryInstantied = Instantiate(scenaryLeftSide[Random.Range(0, scenaryLeftSide.Length)], new Vector3(11, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+                    scenaryIndex += 1;
+
+                    sceneryInstantied = Instantiate(scenaryLeftSide[Random.Range(0, scenaryLeftSide.Length)], new Vector3(-11, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+                }
+
+                //--------------------------- spawn new scenery
+                scenaryIndex += 1;
+            }
+            else if (sceneryPiece.transform.position.x == 11)//is a right side
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    Destroy(instantiedScenary[scenaryIndex]);
+                    instantiedScenary[scenaryIndex] = null;
+
+                    //--------------------------- spawn new scenery
+
+                    GameObject sceneryInstantied = Instantiate(scenaryTwoSides[Random.Range(0, scenaryTwoSides.Length)], new Vector3(0, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+
+                    //--------------------------- spawn new scenery
+
+                    scenaryIndex += 1;
+                }
+            }
+            else if (sceneryPiece.transform.position.x == -11)//is a left side
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    Destroy(instantiedScenary[scenaryIndex]);
+                    instantiedScenary[scenaryIndex] = null;
+
+                    //--------------------------- spawn new scenery
+
+                    GameObject sceneryInstantied = Instantiate(scenaryTwoSides[Random.Range(0, scenaryTwoSides.Length)], new Vector3(0, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+
+                    //--------------------------- spawn new scenery
+
+                    scenaryIndex += 1;
+                }
+            }
+            offset += scenerySize;
         }
-        else
+        else //dps pensar nisso
         {
             if (sceneryPiece.transform.position.x == 0)//is a two side
             {
@@ -111,39 +179,6 @@ public class ScenerySpawner : MonoBehaviour
                 }
                 offset += scenerySize;
             }
-        }
-    }
-    public void DestroyScenery(GameObject sceneryToDestroy)//if scenery is overpast
-    {
-        if (sceneryToDestroy.transform.position.x == 0)//is a two side
-        {
-            Destroy(sceneryToDestroy);
-            instantiedScenary[scenaryIndex] = null;
-
-            scenaryIndex += 1;
-            offset += scenerySize;
-        }
-        else if (sceneryToDestroy.transform.position.x == 11)//is a right side
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                Destroy(instantiedScenary[scenaryIndex]);
-                instantiedScenary[scenaryIndex] = null;
-
-                scenaryIndex += 1;
-            }
-            offset += scenerySize;
-        }
-        else if (sceneryToDestroy.transform.position.x == -11)//is a left side
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                Destroy(instantiedScenary[scenaryIndex]);
-                instantiedScenary[scenaryIndex] = null;
-
-                scenaryIndex += 1;
-            }
-            offset += scenerySize;
         }
     }
 }
