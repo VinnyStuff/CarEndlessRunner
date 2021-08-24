@@ -17,6 +17,8 @@ public class ScenerySpawner : MonoBehaviour
     public bool changingBiome;//change the biome
     public string currentBiome;
     public int numberOfBiomes;
+    public int valueMinBiomeScenery;
+    public int valueMaxBiomeScenery;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,18 +38,23 @@ public class ScenerySpawner : MonoBehaviour
     public void SelectingTheFirstScenerysPieces()
     {
         int selectCurrentBiome = Random.Range(0, numberOfBiomes);
-        if (selectCurrentBiome == 0)
+        currentBiome = biomes[selectCurrentBiome];
+
+        if (currentBiome == "Florest")
         {
-            currentBiome = biomes[selectCurrentBiome];
+            valueMinBiomeScenery = 0;
+            valueMaxBiomeScenery = 3;
         }
-        else if (selectCurrentBiome == 1)
+        else if (currentBiome == "Desert")
         {
-            currentBiome = biomes[selectCurrentBiome];
-        }
-        else if (selectCurrentBiome == 2)
+            valueMinBiomeScenery = 4;
+            valueMaxBiomeScenery = 6;
+        }        
+        else if (currentBiome == "Town")
         {
-            currentBiome = biomes[selectCurrentBiome];
+
         }
+
         for (int i = 0; i < 3; i++)
         {
             SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
