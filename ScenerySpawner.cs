@@ -15,6 +15,7 @@ public class ScenerySpawner : MonoBehaviour
     public int scenerySize;
     public string[] biomes;
     public bool changingBiome;//change the biome
+    public bool transitionBiome;
     public string currentBiome;
     public int numberOfBiomes;
     public int valueMinBiomeScenery;
@@ -100,14 +101,28 @@ public class ScenerySpawner : MonoBehaviour
             }
             if (changingBiome == true)
             {
-                for (int i = 0; i < instantiedScenary.Count - 1; i++)
+                if (transitionBiome == true)
                 {
-                    if (!instantiedScenary[i].name.Contains(currentBiome))
+                    for (int i = 0; i < instantiedScenary.Count - 1; i++)
                     {
-                        return;
+                        if (!instantiedScenary[i].name.Contains("transition"))
+                        {
+                            return;
+                        }
                     }
+                    transitionBiome = false;
                 }
-                changingBiome = false;
+                else
+                {
+                    for (int i = 0; i < instantiedScenary.Count - 1; i++)
+                    {
+                        if (!instantiedScenary[i].name.Contains(currentBiome))
+                        {
+                            return;
+                        }
+                    }
+                    changingBiome = false;
+                }
             }
         }
 
@@ -120,25 +135,49 @@ public class ScenerySpawner : MonoBehaviour
     {
         if (destroySceneryPiece == true)
         {
-            int positionX = 11;
-            GameObject[] currentArray = scenaryRightSide;
-            for (int i = 0; i < 2; i++)
+            if (transitionBiome == true)
             {
-                Destroy(instantiedScenary[scenaryIndex]);
-                instantiedScenary[scenaryIndex] = null;
+                int positionX = 11;
+                GameObject[] currentArray = scenaryRightSide;
+                for (int i = 0; i < 2; i++)
+                {
+                    Destroy(instantiedScenary[scenaryIndex]);
+                    instantiedScenary[scenaryIndex] = null;
 
-                GameObject sceneryInstantied = Instantiate(currentArray[Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery)], new Vector3(positionX, 0, offset), transform.rotation);
-                instantiedScenary[scenaryIndex] = sceneryInstantied;
+                    GameObject sceneryInstantied = Instantiate(currentArray[currentArray.Length - 1], new Vector3(positionX, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
 
-                scenaryIndex += 1;
+                    scenaryIndex += 1;
 
-                positionX = -11;
-                currentArray = scenaryLeftSide;
+                    positionX = -11;
+                    currentArray = scenaryLeftSide;
+                }
+                offset += scenerySize;
             }
-            offset += scenerySize;
+            else
+            {
+                Debug.Log("Spawn");
+                int positionX = 11;
+                GameObject[] currentArray = scenaryRightSide;
+                for (int i = 0; i < 2; i++)
+                {
+                    Destroy(instantiedScenary[scenaryIndex]);
+                    instantiedScenary[scenaryIndex] = null;
+
+                    GameObject sceneryInstantied = Instantiate(currentArray[Random.Range(valueMinBiomeScenery, valueMaxBiomeScenery)], new Vector3(positionX, 0, offset), transform.rotation);
+                    instantiedScenary[scenaryIndex] = sceneryInstantied;
+
+                    scenaryIndex += 1;
+
+                    positionX = -11;
+                    currentArray = scenaryLeftSide;
+                }
+                offset += scenerySize;
+            }
         }
         else
         {
+            Debug.Log("Recycle");
             int positionX = 11;
             for (int i = 0; i < 2; i++)
             {
@@ -165,6 +204,7 @@ public class ScenerySpawner : MonoBehaviour
         }
 
         changingBiome = true;
+        transitionBiome = true;
 
         if (currentBiome == "desert")
         {
