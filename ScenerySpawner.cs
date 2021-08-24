@@ -13,9 +13,14 @@ public class ScenerySpawner : MonoBehaviour
     public int offset;
     public int numberOfscenery;
     public int scenerySize;
+    public string[] biomes;
+    public bool changingBiome;//change the biome
+    public string currentBiome;
+    public int numberOfBiomes;
     // Start is called before the first frame update
     void Start()
     {
+        numberOfBiomes = biomes.Length;
         scenerySize = 60;
         numberOfscenery = 3;
         offset = 0;
@@ -26,9 +31,23 @@ public class ScenerySpawner : MonoBehaviour
     void Update()
     {
         CheckCanRecycleScenery();
+        int selectCurrentBiome = Random.Range(0, numberOfBiomes);
     }
     public void SelectingTheFirstScenerysPieces()
     {
+        int selectCurrentBiome = Random.Range(0, numberOfBiomes);
+        if (selectCurrentBiome == 0)
+        {
+            currentBiome = biomes[selectCurrentBiome];
+        }
+        else if (selectCurrentBiome == 1)
+        {
+            currentBiome = biomes[selectCurrentBiome];
+        }
+        else if (selectCurrentBiome == 2)
+        {
+            currentBiome = biomes[selectCurrentBiome];
+        }
         for (int i = 0; i < 3; i++)
         {
             SpawnScenery(scenaryRightSide, Random.Range(0, scenaryRightSide.Length), 11, false);
