@@ -20,12 +20,8 @@ public class Player : MonoBehaviour
     public bool canUseNitro;
     public Camera playerCamera;
     public Vector3 playerCameraStartPosition;
-    //
-    public bool canRotateRight;
-    public bool canRotateLeft;
     void Start()
     {
-        back = false;
         playerCameraStartPosition = playerCamera.transform.localPosition;
         nitroDuration = 0;
         SelectCar();
@@ -33,7 +29,6 @@ public class Player : MonoBehaviour
         playerIsDead = false;
         currentSpeed = speed;
     }
-    public bool back;
     private void Update()
     {
         PlayerMovement();
@@ -41,39 +36,6 @@ public class Player : MonoBehaviour
         {
             canUseNitro = true;
             speedBefoneNitro = currentSpeed;
-        }
-        if (Input.GetKeyDown(KeyCode.D))//right
-        {
-            //canRotateRight = true;
-        }        
-        if (Input.GetKeyDown(KeyCode.A))//right
-        {
-            //canRotateLeft = true;
-        }
-        if (canRotateRight)
-        {
-            if (cars[0].transform.localRotation.eulerAngles.y <= 40 && back == false)
-            {
-                cars[0].transform.Rotate(0, 40 * Time.deltaTime, 0);
-            }
-            else
-            {
-                back = true;
-            }
-            if (back)
-            {
-                cars[0].transform.Rotate(0, -40 * Time.deltaTime, 0);
-            }
-            if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 300 && cars[0].transform.localRotation.eulerAngles.y <= 320)
-            {
-                cars[0].transform.Rotate(0, 40 * Time.deltaTime, 0);
-            }
-            if (back == true && cars[0].transform.localRotation.eulerAngles.y >= 355)
-            {
-                cars[0].transform.localRotation = Quaternion.Euler(0, 0, 0);
-                canRotateRight = false;
-                back = false;
-            }
         }
         CameraFollowPlayer();
     }
@@ -146,7 +108,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-    //------------------
     void ChangeLane(int direction)
     {
         int targetLine = currentLane + direction;
