@@ -126,7 +126,6 @@ public class Player : MonoBehaviour
     }
     void PlayerMovement()
     {
-
         Vector3 targetPosition = new Vector3(verticalTargetPosition.x, verticalTargetPosition.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneSpeed * Time.deltaTime);
 
@@ -147,8 +146,6 @@ public class Player : MonoBehaviour
             }
             RotateThePlayer();
         }
-        //transform.rotation = Quaternion.Euler(0, 180, 115);
-        //gameObject.
     }
     public void OnCollisionEnter(Collision collision)
     {
