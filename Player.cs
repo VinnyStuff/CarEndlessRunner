@@ -147,12 +147,15 @@ public class Player : MonoBehaviour
             playerIsDead = true;
         }
     }
-    public void Right()
+    public void RotateThePlayer(string direction)
     {
-        ChangeLane(4);
-    }
-    public void Left()
-    {
-        ChangeLane(-4);
+        if (direction == "right")
+        {
+            //Rotate the player to right
+        }        
+        if (direction == "left")
+        {
+            //Rotate the player to left
+        }
     }
 }
