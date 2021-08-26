@@ -13,6 +13,11 @@ public class Player : MonoBehaviour
     public bool playerIsDead;
     public List<GameObject> cars;
     public float velocityIncreasingPerSecond;
+    //rotate player
+    public GameObject playerFront;
+    public GameObject playerBack;
+    public bool canRotateRight;
+    public bool canRotateLeft;
     //NITRO
     public float speedBefoneNitro;
     public float nitroDurationInSeconds;
@@ -22,6 +27,9 @@ public class Player : MonoBehaviour
     public Vector3 playerCameraStartPosition;
     void Start()
     {
+        backRight = false;
+        canRotateRight = false;
+        canRotateLeft = false;
         playerCameraStartPosition = playerCamera.transform.localPosition;
         nitroDuration = 0;
         SelectCar();
@@ -130,14 +138,17 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.A))//left
             {
                 ChangeLane(-4);
+                CanRotateThePlayer("left");
             }
             if (Input.GetKeyDown(KeyCode.D))//right
             {
-                ChangeLane(4);
+                //ChangeLane(4);
+                CanRotateThePlayer("right");
             }
+            RotateThePlayer();
         }
         //transform.rotation = Quaternion.Euler(0, 180, 115);
-        //gameObject.transform.Rotate(0, 0, rotateForce * Time.deltaTime);
+        //gameObject.
     }
     public void OnCollisionEnter(Collision collision)
     {
@@ -147,15 +158,50 @@ public class Player : MonoBehaviour
             playerIsDead = true;
         }
     }
-    public void RotateThePlayer(string direction)
+    public void CanRotateThePlayer(string direction)
     {
         if (direction == "right")
         {
-            //Rotate the player to right
-        }        
+            canRotateRight = true;
+        }
         if (direction == "left")
         {
-            //Rotate the player to left
+            canRotateLeft = true;
+        }
+    }
+    public bool backRight;
+    public bool backLeft;
+    public void RotateThePlayer()
+    {
+
+        if (canRotateRight == true)
+        {
+            if (playerBack.transform.eulerAngles.y >= 30)
+            {
+                backRight = true;
+            }
+            else if (playerBack.transform.eulerAngles.y <= 30 && backRight == false)
+            {
+                playerBack.transform.Rotate(0, 150 * Time.deltaTime, 0);
+            }
+            if (playerBack.transform.eulerAngles.y >= 15)
+            {
+                ChangeLane(4);
+            }
+            if (backRight == true)
+            {
+                playerBack.transform.Rotate(0, -150 * Time.deltaTime, 0);
+                if (playerBack.transform.eulerAngles.y <= 1)
+                {
+                    Debug.Log("backing");
+                    canRotateRight = false;
+                    backRight = false;
+                }
+            }
+        }
+        else if (canRotateLeft == true)
+        {
+
         }
     }
 }
