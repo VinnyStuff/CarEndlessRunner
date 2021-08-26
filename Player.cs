@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.D))//right
             {
-                //ChangeLane(4);
+                ChangeLane(4);
                 CanRotateThePlayer("right");
             }
             RotateThePlayer();
@@ -166,14 +166,13 @@ public class Player : MonoBehaviour
         }
         if (direction == "left")
         {
-            canRotateLeft = true;
+            //canRotateLeft = true;
         }
     }
     public bool backRight;
     public bool backLeft;
     public void RotateThePlayer()
     {
-
         if (canRotateRight == true)
         {
             if (playerBack.transform.eulerAngles.y >= 30)
@@ -191,9 +190,9 @@ public class Player : MonoBehaviour
             if (backRight == true)
             {
                 playerBack.transform.Rotate(0, -150 * Time.deltaTime, 0);
-                if (playerBack.transform.eulerAngles.y <= 1)
+                if (playerBack.transform.eulerAngles.y <= 1 || playerBack.transform.eulerAngles.y >= 350)
                 {
-                    Debug.Log("backing");
+                    playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
                     canRotateRight = false;
                     backRight = false;
                 }
