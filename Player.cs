@@ -166,31 +166,35 @@ public class Player : MonoBehaviour
         }
         if (direction == "left")
         {
-            //canRotateLeft = true;
+            canRotateLeft = true;
         }
     }
     public bool backRight;
     public bool backLeft;
+    private static float WrapAngle(float angle)
+    {
+        angle %= 360;
+        if (angle > 180)
+            return angle - 360;
+
+        return angle;
+    }
     public void RotateThePlayer()
     {
         if (canRotateRight == true)
         {
-            if (playerBack.transform.eulerAngles.y >= 30)
+            if (playerBack.transform.eulerAngles.y >= 15 && backRight == false)
             {
                 backRight = true;
             }
             else if (playerBack.transform.eulerAngles.y <= 30 && backRight == false)
             {
-                playerBack.transform.Rotate(0, 150 * Time.deltaTime, 0);
-            }
-            if (playerBack.transform.eulerAngles.y >= 15)
-            {
-                ChangeLane(4);
+                playerBack.transform.Rotate(0, 50 * Time.deltaTime, 0);
             }
             if (backRight == true)
             {
-                playerBack.transform.Rotate(0, -150 * Time.deltaTime, 0);
-                if (playerBack.transform.eulerAngles.y <= 1 || playerBack.transform.eulerAngles.y >= 350)
+                playerBack.transform.Rotate(0, -50 * Time.deltaTime, 0);
+                if (WrapAngle(playerBack.transform.eulerAngles.y) <= 0)
                 {
                     playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
                     canRotateRight = false;
@@ -200,7 +204,24 @@ public class Player : MonoBehaviour
         }
         else if (canRotateLeft == true)
         {
-
+            if (WrapAngle(playerBack.transform.eulerAngles.y) <= -15 && backLeft == false)
+            {
+                backLeft = true;
+            }
+            else if (WrapAngle(playerBack.transform.eulerAngles.y) >= -30 && backLeft == false)
+            {
+                playerBack.transform.Rotate(0, -50 * Time.deltaTime, 0);
+            }
+            if (backLeft == true)
+            {
+                playerBack.transform.Rotate(0, 50 * Time.deltaTime, 0);
+                if (WrapAngle(playerBack.transform.eulerAngles.y) >= 0)
+                {
+                    playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    canRotateLeft = false;
+                    backLeft = false;
+                }
+            }
         }
     }
 }
