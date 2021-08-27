@@ -186,11 +186,11 @@ public class Player : MonoBehaviour
             }
             else if (playerBack.transform.eulerAngles.y <= 30 && backRight == false)
             {
-                playerBack.transform.Rotate(0, 50 * Time.deltaTime, 0);
+                playerBack.transform.Rotate(0, (laneSpeed * 6.25f) * Time.deltaTime, 0);
             }
             if (backRight == true)
             {
-                playerBack.transform.Rotate(0, -50 * Time.deltaTime, 0);
+                playerBack.transform.Rotate(0, -(laneSpeed * 6.25f) * Time.deltaTime, 0);
                 if (WrapAngle(playerBack.transform.eulerAngles.y) <= 0)
                 {
                     playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -207,11 +207,11 @@ public class Player : MonoBehaviour
             }
             else if (WrapAngle(playerBack.transform.eulerAngles.y) >= -30 && backLeft == false)
             {
-                playerBack.transform.Rotate(0, -50 * Time.deltaTime, 0);
+                playerBack.transform.Rotate(0, -(laneSpeed * 6.25f) * Time.deltaTime, 0);
             }
             if (backLeft == true)
             {
-                playerBack.transform.Rotate(0, 50 * Time.deltaTime, 0);
+                playerBack.transform.Rotate(0, (laneSpeed * 6.25f) * Time.deltaTime, 0);
                 if (WrapAngle(playerBack.transform.eulerAngles.y) >= 0)
                 {
                     playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
