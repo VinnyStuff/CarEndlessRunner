@@ -80,18 +80,19 @@ public class ObstacleSpawner : MonoBehaviour
                 if (destroyIndex >= 2) // spawn new obstacles
                 {
                     destroyIndex = 0;
-                    GetThePositionOffLatestObstacle();   
+                    float maxPosition = GetThePositionOffLatestObstacle();
+                    SpawnObstacles(maxPosition);
                 }
             }
         }
     }
-    public void GetThePositionOffLatestObstacle() //and spawn the new obstacles
+    public float GetThePositionOffLatestObstacle()
     {
+        obstaclePositionZ.Clear();
         for (int i = 0; i < obstaclesInstantied.Count; i++)
         {
             obstaclePositionZ.Add(obstaclesInstantied[i].transform.position.z);
         }
-        SpawnObstacles(obstaclePositionZ.Max());
-        obstaclePositionZ.Clear();
+        return obstaclePositionZ.Max();
     }
 }
