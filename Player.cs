@@ -13,11 +13,6 @@ public class Player : MonoBehaviour
     public bool playerIsDead;
     public List<GameObject> cars;
     public float velocityIncreasingPerSecond;
-    //rotate player
-    public GameObject playerFront;
-    public GameObject playerBack;
-    public bool canRotateRight;
-    public bool canRotateLeft;
     //NITRO
     public float speedBefoneNitro;
     public float nitroDurationInSeconds;
@@ -27,9 +22,6 @@ public class Player : MonoBehaviour
     public Vector3 playerCameraStartPosition;
     void Start()
     {
-        backRight = false;
-        canRotateRight = false;
-        canRotateLeft = false;
         playerCameraStartPosition = playerCamera.transform.localPosition;
         nitroDuration = 0;
         SelectCar();
@@ -137,14 +129,11 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.A))//left
             {
                 ChangeLane(-4);
-                CanRotateThePlayer("left");
             }
             if (Input.GetKeyDown(KeyCode.D))//right
             {
                 ChangeLane(4);
-                CanRotateThePlayer("right");
             }
-            RotateThePlayer();
         }
     }
     public void OnCollisionEnter(Collision collision)
@@ -153,72 +142,6 @@ public class Player : MonoBehaviour
         if (obstacle)
         {
             playerIsDead = true;
-        }
-    }
-    public void CanRotateThePlayer(string direction)
-    {
-        if (direction == "right")
-        {
-            canRotateRight = true;
-        }
-        if (direction == "left")
-        {
-            canRotateLeft = true;
-        }
-    }
-    public bool backRight;
-    public bool backLeft;
-    private static float WrapAngle(float angle)
-    {
-        angle %= 360;
-        if (angle > 180)
-            return angle - 360;
-
-        return angle;
-    }
-    public void RotateThePlayer()
-    {
-        if (canRotateRight == true)
-        {
-            if (playerBack.transform.eulerAngles.y >= 15 && backRight == false)
-            {
-                backRight = true;
-            }
-            else if (playerBack.transform.eulerAngles.y <= 30 && backRight == false)
-            {
-                playerBack.transform.Rotate(0, (laneSpeed * 6.25f) * Time.deltaTime, 0);
-            }
-            if (backRight == true)
-            {
-                playerBack.transform.Rotate(0, -(laneSpeed * 6.25f) * Time.deltaTime, 0);
-                if (WrapAngle(playerBack.transform.eulerAngles.y) <= 0)
-                {
-                    playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    canRotateRight = false;
-                    backRight = false;
-                }
-            }
-        }
-        else if (canRotateLeft == true)
-        {
-            if (WrapAngle(playerBack.transform.eulerAngles.y) <= -15 && backLeft == false)
-            {
-                backLeft = true;
-            }
-            else if (WrapAngle(playerBack.transform.eulerAngles.y) >= -30 && backLeft == false)
-            {
-                playerBack.transform.Rotate(0, -(laneSpeed * 6.25f) * Time.deltaTime, 0);
-            }
-            if (backLeft == true)
-            {
-                playerBack.transform.Rotate(0, (laneSpeed * 6.25f) * Time.deltaTime, 0);
-                if (WrapAngle(playerBack.transform.eulerAngles.y) >= 0)
-                {
-                    playerBack.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    canRotateLeft = false;
-                    backLeft = false;
-                }
-            }
         }
     }
 }
