@@ -8,7 +8,6 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject[] obstacles;
     public GameObject player; //player position = 0
     public List<GameObject> obstaclesInstantied;
-    public List<float> obstaclePositionZ = new List<float>();
     public int emptinessBetweenObstacles;
     public int cameraView;
     public float currentPositionObstacle;
@@ -88,11 +87,14 @@ public class ObstacleSpawner : MonoBehaviour
     }
     public float GetThePositionOffLatestObstacle()
     {
-        obstaclePositionZ.Clear();
+        float maxPosition = 0;
         for (int i = 0; i < obstaclesInstantied.Count; i++)
         {
-            obstaclePositionZ.Add(obstaclesInstantied[i].transform.position.z);
+            if (obstaclesInstantied[i].transform.position.z > maxPosition)
+            {
+                maxPosition = obstaclesInstantied[i].transform.position.z;
+            }
         }
-        return obstaclePositionZ.Max();
+        return maxPosition;
     }
 }
