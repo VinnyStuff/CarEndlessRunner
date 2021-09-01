@@ -35,7 +35,6 @@ public class ScenerySpawner : MonoBehaviour
     void Update()
     {
         CheckCanRecycleScenery();
-        int selectCurrentBiome = Random.Range(0, numberOfBiomes);
     }
     public void SelectingTheFirstScenerysPieces()
     {

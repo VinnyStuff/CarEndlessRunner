@@ -17,7 +17,8 @@ public class Obstacle : MonoBehaviour
         rb.useGravity = false;
         GetTheGameObjectName();
         SetColorObstacle();
-        speed = Random.Range(10, 16);
+        //speed = Random.Range(10, 16);
+        speed = 10;
         gameObject.transform.position = new Vector3(transform.position.x, position_y, transform.position.z); //set the right y value
     }
     // Update is called once per frame
