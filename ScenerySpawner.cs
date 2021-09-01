@@ -155,7 +155,7 @@ public class ScenerySpawner : MonoBehaviour
             }
             else
             {
-                Debug.Log("Spawn");
+                //Debug.Log("Spawn");
                 int positionX = 11;
                 GameObject[] currentArray = scenaryRightSide;
                 for (int i = 0; i < 2; i++)
@@ -176,7 +176,7 @@ public class ScenerySpawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("Recycle");
+            //Debug.Log("Recycle");
             int positionX = 11;
             for (int i = 0; i < 2; i++)
             {

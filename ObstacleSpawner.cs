@@ -38,6 +38,7 @@ public class ObstacleSpawner : MonoBehaviour
         bool haveCarinLine3 = false;
         for (int i = 0; i < 2; i++)
         {
+            int carVariationZ = Random.Range(-8, 9);
             int currentObstacle = Random.Range(0, obstacles.Length - 1);
             int xPositionObstacleChoice = Random.Range(0, 3);
             if (xPositionObstacleChoice == xPositionObstacle)
@@ -68,7 +69,7 @@ public class ObstacleSpawner : MonoBehaviour
                 PositionSpawnX = 4;
                 haveCarinLine3 = true;
             }
-            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 0, spawnPosition + emptinessBetweenObstacles), transform.rotation * Quaternion.Euler(0, 270, 0));
+            GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 0, (spawnPosition + emptinessBetweenObstacles) + (carVariationZ)), transform.rotation * Quaternion.Euler(0, 270, 0));
             newObstacle.AddComponent<Obstacle>();
             obstaclesInstantied.Add(newObstacle);
         }

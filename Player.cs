@@ -144,4 +144,8 @@ public class Player : MonoBehaviour
             playerIsDead = true;
         }
     }
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("bateu");
+    }
 }
