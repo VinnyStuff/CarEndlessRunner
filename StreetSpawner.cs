@@ -11,6 +11,7 @@ public class StreetSpawner : MonoBehaviour
     public int offset;
     public int numberOfStreets;
     public int streetSize;
+    public CoinsSpawner coinsSpawner;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,5 +52,7 @@ public class StreetSpawner : MonoBehaviour
         streetNewPosition.transform.position = new Vector3(0, 0, offset);
         streetIndex += 1;
         offset += streetSize;
+
+        coinsSpawner.SpawnCoins();
     }
 }

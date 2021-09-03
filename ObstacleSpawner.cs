@@ -8,7 +8,6 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject[] obstacles;
     public List<GameObject> obstaclesInstantied;
     public GameObject player; //player position = 0
-    public GameObject money;
     public List<GameObject> moneyInstantied;
     public int emptinessBetweenObstacles;
     public int cameraView;
@@ -16,6 +15,7 @@ public class ObstacleSpawner : MonoBehaviour
     private int xPositionObstacle;
     public int numberOfLines;
     public int destroyIndex;
+    private float lastCoin;
     public void Start()
     {
         numberOfLines = 3;
@@ -33,9 +33,6 @@ public class ObstacleSpawner : MonoBehaviour
     }
     public void SpawnObstacles(float spawnPosition) //and money
     {
-        bool haveCarinLine1 = false;
-        bool haveCarinLine2 = false; 
-        bool haveCarinLine3 = false;
         for (int i = 0; i < 2; i++)
         {
             int carVariationZ = Random.Range(-8, 9);
@@ -57,36 +54,19 @@ public class ObstacleSpawner : MonoBehaviour
             if (xPositionObstacle == 0)
             {
                 PositionSpawnX = -4;
-                haveCarinLine1 = true;
             }
             else if (xPositionObstacle == 1)
             {
                 PositionSpawnX = 0;
-                haveCarinLine2 = true;
             }
             else if (xPositionObstacle == 2)
             {
                 PositionSpawnX = 4;
-                haveCarinLine3 = true;
             }
             GameObject newObstacle = Instantiate(obstacles[currentObstacle], new Vector3(PositionSpawnX, 0, (spawnPosition + emptinessBetweenObstacles) + (carVariationZ)), transform.rotation * Quaternion.Euler(0, 270, 0));
             newObstacle.AddComponent<Obstacle>();
             obstaclesInstantied.Add(newObstacle);
         }
-        //Spawn Money
-        if (haveCarinLine1 == false)
-        {
-            moneyManagement(-4, spawnPosition + emptinessBetweenObstacles);
-        }
-        else if (haveCarinLine2 == false)
-        {
-            moneyManagement(0, spawnPosition + emptinessBetweenObstacles);
-        }
-        else if (haveCarinLine3 == false)
-        {
-            moneyManagement(4, spawnPosition + emptinessBetweenObstacles);
-        }
-        //Spawn money
         currentPositionObstacle = currentPositionObstacle + emptinessBetweenObstacles;
     }
     public void DestroyTheObstacles()
@@ -119,10 +99,5 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
         return maxPosition;
-    }
-    public void moneyManagement(int x_position, float z_position) //after put can destroy
-    {
-        GameObject newMoney = Instantiate(money, new Vector3(x_position, 0, z_position), transform.rotation);
-        moneyInstantied.Add(newMoney);
     }
 }
