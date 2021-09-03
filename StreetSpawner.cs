@@ -35,6 +35,7 @@ public class StreetSpawner : MonoBehaviour
         if (player.position.z > distance)
         {
             RecycleStreet(instantiedStreet[streetIndex]);
+            coinsSpawner.SpawnCoins();
         }
         if (streetIndex > instantiedStreet.Count - 1)
         {
@@ -52,7 +53,5 @@ public class StreetSpawner : MonoBehaviour
         streetNewPosition.transform.position = new Vector3(0, 0, offset);
         streetIndex += 1;
         offset += streetSize;
-
-        coinsSpawner.SpawnCoins();
     }
 }

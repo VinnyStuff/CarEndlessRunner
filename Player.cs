@@ -146,6 +146,6 @@ public class Player : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("bateu");
+        //Debug.Log("bateu");
     }
 }

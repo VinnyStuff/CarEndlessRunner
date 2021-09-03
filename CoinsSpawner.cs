@@ -28,7 +28,7 @@ public class CoinsSpawner : MonoBehaviour
         DestroyCoins();
     }
 
-    public void SpawnCoins()
+    public void SpawnCoins() //coins spawn in the street spawner
     {
         for (int i = 0; i < 12; i++)
         {
@@ -54,7 +54,7 @@ public class CoinsSpawner : MonoBehaviour
     {
         for (int i = 0; i < coinsInstantied.Count; i++)
         {
-            if (coinsInstantied[i].transform.position.z > offsetDestroy)
+            if (player.position.z - 10 > coinsInstantied[i].transform.position.z)
             {
                 Destroy(coinsInstantied[i]);
                 coinsInstantied.Remove(coinsInstantied[i]);
