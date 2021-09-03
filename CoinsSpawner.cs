@@ -12,6 +12,7 @@ public class CoinsSpawner : MonoBehaviour
     public int offsetDestroy;
     public Transform player;
     public int coinCollumnsInStreet;
+    public int fixedIndex;
     void Start()
     {
         offsetDestroy = 30;
@@ -22,27 +23,31 @@ public class CoinsSpawner : MonoBehaviour
             SpawnCoins();
         }
     }
-
-    void Update()
+    private void FixedUpdate()
     {
-        DestroyCoins();
+        fixedIndex += 1;
+        if (fixedIndex >= 50)
+        {
+            DestroyCoins();
+            fixedIndex = 0;
+        }
     }
-
     public void SpawnCoins() //coins spawn in the street spawner
     {
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 120; i++)
         {
-            if (Random.Range(0, 100) < 25) //line 1
+            if (Random.Range(0, 100) < 20) //line 1
             {
                 GameObject coinInstantied = Instantiate(coin, new Vector3(-4, 0, offset), transform.rotation);
+
                 coinsInstantied.Add(coinInstantied);
             }
-            if (Random.Range(0, 100) < 25) //line 2
+            if (Random.Range(0, 100) < 20) //line 2
             {
                 GameObject coinInstantied = Instantiate(coin, new Vector3(0, 0, offset), transform.rotation);
                 coinsInstantied.Add(coinInstantied);
             }
-            if (Random.Range(0, 100) < 25) //line 3
+            if (Random.Range(0, 100) < 20) //line 3
             {
                 GameObject coinInstantied = Instantiate(coin, new Vector3(4, 0, offset), transform.rotation);
                 coinsInstantied.Add(coinInstantied);
@@ -52,7 +57,7 @@ public class CoinsSpawner : MonoBehaviour
     }
     public void DestroyCoins()
     {
-        for (int i = 0; i < coinsInstantied.Count; i++)
+        for (int i = coinsInstantied.Count - 1; i > 0; i--)
         {
             if (player.position.z - 10 > coinsInstantied[i].transform.position.z)
             {
