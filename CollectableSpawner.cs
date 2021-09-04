@@ -37,8 +37,8 @@ public class CollectableSpawner : MonoBehaviour
     {
         for (int i = 0; i < coinCollumnsInStreet; i++)
         {
-            int CollectableChoice = Random.Range(0, 10);
-            if (CollectableChoice == 1)//spawn a collectable
+            int chance = 1;
+            if (Random.Range(0, 100) <= chance) //spawn a collectable
             {
                 Collectable();
             }
