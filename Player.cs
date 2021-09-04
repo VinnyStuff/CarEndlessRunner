@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public HUD hud;
+    public CollectableSpawner collectableSpawner;
+
     public float speed;// = 15f;
     public float currentSpeed;
     private Rigidbody rb;
@@ -143,7 +146,7 @@ public class Player : MonoBehaviour
             }
 
             // make ball go forward with the car
-            target.transform.position = new Vector3(target.transform.position.x, transform.position.y, transform.position.z + targetDistance * (currentSpeed * 0.2f));
+            target.transform.position = new Vector3(target.transform.position.x, transform.position.y, transform.position.z + targetDistance);
 
             // move car sideways
             Vector3 targetPosition = new Vector3(target.transform.position.x, transform.position.y, transform.position.z);
@@ -151,11 +154,10 @@ public class Player : MonoBehaviour
 
             // rotate car
             var rotation = Quaternion.LookRotation(target.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steering * 3.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steering * 3.0f * (50 / currentSpeed * 0.5f));
 
             transform.position = new Vector3(transform.position.x, 0.07f, transform.position.z);
             rb.velocity = Vector3.forward * currentSpeed; // make physics engine happy
-
         }
     }
     public void OnCollisionEnter(Collision collision)
@@ -164,6 +166,15 @@ public class Player : MonoBehaviour
         if (obstacle)
         {
             isPlayerDead = true;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Collectable collectable = other.GetComponent<Collectable>();
+        if (collectable)
+        {
+            hud.IncreaseCoins();
+            collectableSpawner.RemoveCollectable(other.gameObject);
         }
     }
 }

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CollectableSpawner : MonoBehaviour
 {
     //STREET SIZE = amount of coins in a street = not flexible , in moment is 13
     // street size = 60
     public GameObject coin;
+    public Text coinsHUD;
     public GameObject[] collectable; 
     public List<GameObject> collectableInstantied;
     public int offset;
@@ -59,21 +61,29 @@ public class CollectableSpawner : MonoBehaviour
             }
         }
     }
+    public void RemoveCollectable(GameObject collectable)
+    {
+        collectableInstantied.Remove(collectable);
+        Destroy(collectable);
+    }
     public void Coin()
     {
         if (Random.Range(0, 100) < 20) //line 1
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(-4, 0, offset), transform.rotation);
+            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         if (Random.Range(0, 100) < 20) //line 2
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(0, 0, offset), transform.rotation);
+            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         if (Random.Range(0, 100) < 20) //line 3
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(4, 0, offset), transform.rotation);
+            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         offset += 5;
