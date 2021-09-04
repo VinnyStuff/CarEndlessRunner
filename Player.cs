@@ -2,18 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     public float speed;// = 15f;
     public float currentSpeed;
-    public float laneSpeed;// = 10f;
     private Rigidbody rb;
-    private int currentLane = 4;
-    private Vector3 verticalTargetPosition;
-    public bool playerIsDead;
+    public float laneWidth = 4.0f;
+
+    // car movement
+    public float steering = 1.0f;
+    public float targetDistance = 10f;
+    public GameObject target;
+    private Vector3 sidewaysVelocity = Vector3.zero;
+
+    public bool isPlayerDead;
     public List<GameObject> cars;
     public float velocityIncreasingPerSecond;
-    //NITRO
+
+    // NITRO
     public float speedBefoneNitro;
     public float nitroDurationInSeconds;
     public float nitroDuration;
@@ -26,7 +33,7 @@ public class Player : MonoBehaviour
         nitroDuration = 0;
         SelectCar();
         rb = GetComponent<Rigidbody>();
-        playerIsDead = false;
+        isPlayerDead = false;
         currentSpeed = speed;
     }
     private void Update()
@@ -44,7 +51,8 @@ public class Player : MonoBehaviour
         IncreasePlayerSpeedOvertime();
         TurnOnNitro();
     }
-    public float virtualCameraX;
+
+    private float virtualCameraX;
     public void CameraFollowPlayer()
     {
         float playerPositionX = gameObject.transform.position.x;
@@ -54,6 +62,7 @@ public class Player : MonoBehaviour
         float playerPositionZ = gameObject.transform.position.z - 9.8f;
         playerCamera.transform.position = new Vector3(virtualCameraX * cameraParallax, heightCamera, playerPositionZ);
     }
+
     public void SelectCar()
     {
         for (int i = cars.Count - 1; i >= 0; i--)
@@ -70,9 +79,10 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     public void IncreasePlayerSpeedOvertime()
     {
-        if (canUseNitro == false && playerIsDead == false)
+        if (canUseNitro == false && isPlayerDead == false)
         {
             currentSpeed = currentSpeed + (velocityIncreasingPerSecond / 50);
         }
@@ -108,32 +118,44 @@ public class Player : MonoBehaviour
             }
         }
     }
-    void ChangeLane(int direction)
+    float getCurrentLane()
     {
-        int targetLine = currentLane + direction;
-        if (targetLine < 0 || targetLine > 8)
-            return;
-        currentLane = targetLine;
-        verticalTargetPosition = new Vector3((currentLane - 4), 0, 0);
+        return target.transform.position.x;
+    }
+    void ChangeLaneBy(int lane)
+    {
+        float currentX = getCurrentLane();
+        target.transform.position = new Vector3(currentX + (laneWidth * lane), target.transform.position.y, target.transform.position.z);
     }
     void PlayerMovement()
     {
-        Vector3 targetPosition = new Vector3(verticalTargetPosition.x, verticalTargetPosition.y, transform.position.z);
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneSpeed * Time.deltaTime);
 
-        if (playerIsDead == false)
+        if (!isPlayerDead)
         {
-            rb.velocity = Vector3.forward * currentSpeed;
+            float currentX = getCurrentLane();
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                if (currentX > -4) ChangeLaneBy(-1);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (currentX < 4) ChangeLaneBy(1);
+            }
+
+            // make ball go forward with the car
+            target.transform.position = new Vector3(target.transform.position.x, transform.position.y, transform.position.z + targetDistance * (currentSpeed * 0.2f));
+
+            // move car sideways
+            Vector3 targetPosition = new Vector3(target.transform.position.x, transform.position.y, transform.position.z);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref sidewaysVelocity, (1 / steering) * 0.3f * (50 / currentSpeed * 0.5f));
+
+            // rotate car
+            var rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steering * 3.0f);
 
             transform.position = new Vector3(transform.position.x, 0.07f, transform.position.z);
-            if (Input.GetKeyDown(KeyCode.A))//left
-            {
-                ChangeLane(-4);
-            }
-            if (Input.GetKeyDown(KeyCode.D))//right
-            {
-                ChangeLane(4);
-            }
+            rb.velocity = Vector3.forward * currentSpeed; // make physics engine happy
+
         }
     }
     public void OnCollisionEnter(Collision collision)
@@ -141,11 +163,7 @@ public class Player : MonoBehaviour
         Obstacle obstacle = collision.transform.GetComponent<Obstacle>();
         if (obstacle)
         {
-            playerIsDead = true;
+            isPlayerDead = true;
         }
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log("bateu");
     }
 }
