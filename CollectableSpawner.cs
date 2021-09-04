@@ -81,22 +81,11 @@ public class CollectableSpawner : MonoBehaviour
     public void Collectable()
     {
         int collectableChoice = Random.Range(0, collectable.Length);
-        int currentPosition = Random.Range(0, 3);
-        if (currentPosition == 0) //line 1
-        {
-            GameObject newCollectable = Instantiate(collectable[collectableChoice], new Vector3(-4, 0, offset), transform.rotation);
-            collectableInstantied.Add(newCollectable);
-        }
-        else if (currentPosition == 1) //line 2
-        {
-            GameObject newCollectable = Instantiate(collectable[collectableChoice], new Vector3(0, 0, offset), transform.rotation);
-            collectableInstantied.Add(newCollectable);
-        }
-        else if (currentPosition == 2) //line 3
-        {
-            GameObject newCollectable = Instantiate(collectable[collectableChoice], new Vector3(4, 0, offset), transform.rotation);
-            collectableInstantied.Add(newCollectable);
-        }
+        int[] possiblePosition = { -4, 0, 4 };
+        int positionChoice = Random.Range(0, possiblePosition.Length);
+
+        GameObject newCollectable = Instantiate(collectable[collectableChoice], new Vector3(possiblePosition[positionChoice], 0, offset), transform.rotation);
+        collectableInstantied.Add(newCollectable);
         offset += 5;
     }
 }
