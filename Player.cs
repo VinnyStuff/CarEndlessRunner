@@ -169,12 +169,23 @@ public class Player : MonoBehaviour
         }
     }
     private void OnTriggerEnter(Collider other)
-    {
+    {      
         Collectable collectable = other.GetComponent<Collectable>();
         if (collectable)
         {
-            hud.IncreaseCoins();
-            collectableSpawner.RemoveCollectable(other.gameObject);
+            if (collectable.coin)
+            {
+                hud.IncreaseCoins();
+                other.gameObject.SetActive(false);
+            }
+            else if (collectable.ghost)
+            {
+                Debug.Log("GHOST MODE");
+            }
+            else if (collectable.nitro)
+            {
+                Debug.Log("NITRO");
+            }
         }
     }
 }

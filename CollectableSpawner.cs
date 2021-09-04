@@ -52,7 +52,7 @@ public class CollectableSpawner : MonoBehaviour
     }
     public void DestroyColletacle()
     {
-        for (int i = collectableInstantied.Count - 1; i > 0; i--)
+        for (int i = collectableInstantied.Count - 1; i >= 0; i--)
         {
             if (player.position.z - 10 > collectableInstantied[i].transform.position.z)
             {
@@ -61,29 +61,21 @@ public class CollectableSpawner : MonoBehaviour
             }
         }
     }
-    public void RemoveCollectable(GameObject collectable)
-    {
-        collectableInstantied.Remove(collectable);
-        Destroy(collectable);
-    }
     public void Coin()
     {
         if (Random.Range(0, 100) < 20) //line 1
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(-4, 0, offset), transform.rotation);
-            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         if (Random.Range(0, 100) < 20) //line 2
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(0, 0, offset), transform.rotation);
-            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         if (Random.Range(0, 100) < 20) //line 3
         {
             GameObject coinInstantied = Instantiate(coin, new Vector3(4, 0, offset), transform.rotation);
-            coinInstantied.AddComponent<Collectable>();
             collectableInstantied.Add(coinInstantied);
         }
         offset += 5;

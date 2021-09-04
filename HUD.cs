@@ -13,5 +13,4 @@ public class HUD : MonoBehaviour
         coins += 1;
         CoinsPoint.text = coins.ToString();
     }
-    
 }
