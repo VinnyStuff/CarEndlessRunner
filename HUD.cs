@@ -15,7 +15,7 @@ public class HUD : MonoBehaviour
             gameObject.transform.GetChild(i).gameObject.SetActive(false);
         }
     }
-    private void SetCurrentScene(string scene)
+    private void SetCurrentScreen(string scene)
     {
         CleanHUD();
         if (scene == "Gameplay")
@@ -37,12 +37,12 @@ public class HUD : MonoBehaviour
         if (Time.timeScale == 1)//pause
         {
             Time.timeScale = 0;
-            SetCurrentScene("Pause");
+            SetCurrentScreen("Pause");
         }        
         else if (Time.timeScale == 0)//unpause
         {
             Time.timeScale = 1;
-            SetCurrentScene("Gameplay");
+            SetCurrentScreen("Gameplay");
         }
     }
 }
