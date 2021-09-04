@@ -11,7 +11,7 @@ public class StreetSpawner : MonoBehaviour
     public int offset;
     public int numberOfStreets;
     public int streetSize;
-    public CoinsSpawner coinsSpawner;
+    public CollectableSpawner collectableSpawner;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +35,7 @@ public class StreetSpawner : MonoBehaviour
         if (player.position.z > distance)
         {
             RecycleStreet(instantiedStreet[streetIndex]);
-            coinsSpawner.SpawnCoins();
+            collectableSpawner.SpawnCollectable();
         }
         if (streetIndex > instantiedStreet.Count - 1)
         {
