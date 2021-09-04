@@ -181,10 +181,12 @@ public class Player : MonoBehaviour
             else if (collectable.ghost)
             {
                 Debug.Log("GHOST MODE");
+                other.gameObject.SetActive(false);
             }
             else if (collectable.nitro)
             {
                 Debug.Log("NITRO");
+                other.gameObject.SetActive(false);
             }
         }
     }
