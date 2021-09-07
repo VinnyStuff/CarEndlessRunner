@@ -7,7 +7,11 @@ public class HUD : MonoBehaviour
 {
     public Text CoinsPoint;
     private int coins;
-
+    public void IncreaseCoins()
+    {
+        coins += 1;
+        CoinsPoint.text = coins.ToString();
+    }
     public void CleanHUD()
     {
         for (int i = 1; i < gameObject.gameObject.GetComponentsInChildren<Transform>().Length; i++)//clean the HUD
@@ -26,11 +30,6 @@ public class HUD : MonoBehaviour
         {
             gameObject.transform.GetChild(2).gameObject.SetActive(true);
         }
-    }
-    public void IncreaseCoins()
-    {
-        coins += 1;
-        CoinsPoint.text = coins.ToString();
     }
     public void PauseButton()
     {

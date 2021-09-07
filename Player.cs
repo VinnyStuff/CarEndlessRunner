@@ -130,6 +130,36 @@ public class Player : MonoBehaviour
         float currentX = getCurrentLane();
         target.transform.position = new Vector3(currentX + (laneWidth * lane), target.transform.position.y, target.transform.position.z);
     }
+    public void OnCollisionEnter(Collision collision)
+    {
+        Obstacle obstacle = collision.transform.GetComponent<Obstacle>();
+        if (obstacle)
+        {
+            isPlayerDead = true;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Collectable collectable = other.GetComponent<Collectable>();
+        if (collectable)
+        {
+            if (collectable.coin)
+            {
+                hud.IncreaseCoins();
+                other.gameObject.SetActive(false);
+            }
+            else if (collectable.ghost)
+            {
+                Debug.Log("GHOST MODE");
+                other.gameObject.SetActive(false);
+            }
+            else if (collectable.nitro)
+            {
+                Debug.Log("NITRO");
+                other.gameObject.SetActive(false);
+            }
+        }
+    }
     void PlayerMovement()
     {
 
@@ -158,36 +188,6 @@ public class Player : MonoBehaviour
 
             transform.position = new Vector3(transform.position.x, 0.07f, transform.position.z);
             rb.velocity = Vector3.forward * currentSpeed; // make physics engine happy
-        }
-    }
-    public void OnCollisionEnter(Collision collision)
-    {
-        Obstacle obstacle = collision.transform.GetComponent<Obstacle>();
-        if (obstacle)
-        {
-            isPlayerDead = true;
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {      
-        Collectable collectable = other.GetComponent<Collectable>();
-        if (collectable)
-        {
-            if (collectable.coin)
-            {
-                hud.IncreaseCoins();
-                other.gameObject.SetActive(false);
-            }
-            else if (collectable.ghost)
-            {
-                Debug.Log("GHOST MODE");
-                other.gameObject.SetActive(false);
-            }
-            else if (collectable.nitro)
-            {
-                Debug.Log("NITRO");
-                other.gameObject.SetActive(false);
-            }
         }
     }
 }
