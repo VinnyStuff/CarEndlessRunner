@@ -13,16 +13,16 @@ public class ObstacleSpawner : MonoBehaviour
     public int cameraView;
     public float currentPositionObstacle;
     private int xPositionObstacle;
-    public int numberOfLines;
+    public int numberOfColumns;
     public int destroyIndex;
     private float lastCoin;
     public void Start()
     {
-        numberOfLines = 3;
+        numberOfColumns = 4;
         destroyIndex = 0;
         emptinessBetweenObstacles = 20;
         cameraView = 10;
-        for (int i = 0; i < numberOfLines; i++)
+        for (int i = 0; i < numberOfColumns; i++)
         {
             SpawnObstacles(currentPositionObstacle);
         }
