@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviour //and store
 {
     public GameObject[] cars;
     public GameObject canvas;
+    public string currentScene;
     void Start()
     {
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
-        //testing git
     }
     private void SetCurrentScene(string scene)
     {
+        currentScene = scene;
         for (int i = 1; i < canvas.gameObject.GetComponentsInChildren<Transform>().Length; i++)//clean the HUD
         {
             canvas.transform.GetChild(i).gameObject.SetActive(false);
@@ -98,5 +99,16 @@ public class MainMenu : MonoBehaviour
                 PlayerPrefs.Save();
             }
         }
+    }
+    public void Store()
+    {
+        if (currentScene == "Store")
+        {
+            Debug.Log("Store");
+        }
+    }
+    public void Update()
+    {
+        Store();
     }
 }
