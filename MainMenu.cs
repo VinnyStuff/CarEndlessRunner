@@ -9,16 +9,15 @@ public class MainMenu : MonoBehaviour //and store
     public GameObject[] cars;
     public GameObject canvas;
     public string currentScene;
-    public string currentCar;
     public Text coins;
     public Text carName;
+    public Text carPrice;
     void Start()
     {
         CreatingStructArray();
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
         coins.text = PlayerPrefs.GetInt("Coins", 0).ToString();
-        currentCar = cars[PlayerPrefs.GetInt("SelectedCar", 0)].name;
     }
     public void Update()
     {
@@ -85,19 +84,16 @@ public class MainMenu : MonoBehaviour //and store
                 {
                     cars[i].SetActive(false);
                     cars[0].SetActive(true);
-                    currentCar = cars[0].name.ToString();
                 }
                 else if (cars[0].activeSelf && nextCarDirection == -1) //if in the limited of list / -1 = left button
                 {
                     cars[i].SetActive(false);
                     cars[cars.Length - 1].SetActive(true);
-                    currentCar = cars[cars.Length - 1].name.ToString();
                 }
                 else 
                 {
                     cars[i].SetActive(false);
                     cars[i + (nextCarDirection)].SetActive(true);
-                    currentCar = cars[i + (nextCarDirection)].name.ToString();
                 }
                 break; 
             }
@@ -118,14 +114,16 @@ public class MainMenu : MonoBehaviour //and store
     {
         if (currentScene == "Store")
         {
-            for(int i = 0; i < CarsArray.Length; i++)
+            for(int i = 0; i < cars.Length; i++)
             {
-                if (currentCar == CarsArray[i].carTitle)
+                if (cars[i].activeSelf)
                 {
-                    if (carName.text != CarsArray[i].carTitle)//optimized (run one time)
+                    if (carName.text != CarsArray[i].carTitle)//optimization
                     {
                         carName.text = CarsArray[i].carTitle;
-                    }
+                        carPrice.text = CarsArray[i].price.ToString();
+                        Debug.Log("a");
+                    }               
                 }
             }
         }
@@ -162,14 +160,19 @@ public class MainMenu : MonoBehaviour //and store
     public void CreatingStructArray()
     {
         car0.carTitle = "Car2";
+        car0.price = 100;
 
         car1.carTitle = "SportCar2";
+        car1.price = 200;
 
         car2.carTitle = "Jeep2";
+        car2.price = 300;
 
         car3.carTitle = "MicroBus4";
+        car3.price = 400;
 
         car4.carTitle = "Sedan1";
+        car4.price = 500;
 
 
         CarsArray[0] = car0;
