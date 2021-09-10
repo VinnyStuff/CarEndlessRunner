@@ -12,6 +12,13 @@ public class HUD : MonoBehaviour
         coins += 1;
         CoinsPoint.text = coins.ToString();
     }
+    public void SaveCoinsValue()
+    {
+        int currentCoins = PlayerPrefs.GetInt("Coins", 0);
+        int coinsTotal = currentCoins + coins;
+        PlayerPrefs.SetInt("Coins", coinsTotal);
+        PlayerPrefs.Save();
+    }
     public void CleanHUD()
     {
         for (int i = 1; i < gameObject.gameObject.GetComponentsInChildren<Transform>().Length; i++)//clean the HUD

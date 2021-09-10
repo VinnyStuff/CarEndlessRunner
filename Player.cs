@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour 
 {
     public HUD hud;
     public CollectableSpawner collectableSpawner;
@@ -48,6 +46,11 @@ public class Player : MonoBehaviour
             speedBefoneNitro = currentSpeed;
         }
         CameraFollowPlayer();
+        if (Input.GetKeyDown(KeyCode.V) && isPlayerDead == false)
+        {
+            hud.SaveCoinsValue();
+            isPlayerDead = true;
+        }
     }
     public void FixedUpdate()
     {
@@ -140,29 +143,31 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Collectable collectable = other.GetComponent<Collectable>();
-        if (collectable)
+        if (isPlayerDead == false)
         {
-            if (collectable.coin)
+            Collectable collectable = other.GetComponent<Collectable>();
+            if (collectable)
             {
-                hud.IncreaseCoins();
-                other.gameObject.SetActive(false);
-            }
-            else if (collectable.ghost)
-            {
-                Debug.Log("GHOST MODE");
-                other.gameObject.SetActive(false);
-            }
-            else if (collectable.nitro)
-            {
-                Debug.Log("NITRO");
-                other.gameObject.SetActive(false);
+                if (collectable.coin)
+                {
+                    hud.IncreaseCoins();
+                    other.gameObject.SetActive(false);
+                }
+                else if (collectable.ghost)
+                {
+                    Debug.Log("GHOST MODE");
+                    other.gameObject.SetActive(false);
+                }
+                else if (collectable.nitro)
+                {
+                    Debug.Log("NITRO");
+                    other.gameObject.SetActive(false);
+                }
             }
         }
     }
     void PlayerMovement()
     {
-
         if (!isPlayerDead)
         {
             float currentX = getCurrentLane();

@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 public class MainMenu : MonoBehaviour //and store
 {
     public GameObject[] cars;
     public GameObject canvas;
     public string currentScene;
+    public Text coins;
+    public string currentCar;
     void Start()
     {
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
+        coins.text = PlayerPrefs.GetInt("Coins", 0).ToString();
+        currentCar = cars[PlayerPrefs.GetInt("SelectedCar", 0)].ToString();
+    }
+    public void Update()
+    {
+        InStore();
     }
     private void SetCurrentScene(string scene)
     {
@@ -74,16 +83,19 @@ public class MainMenu : MonoBehaviour //and store
                 {
                     cars[i].SetActive(false);
                     cars[0].SetActive(true);
+                    currentCar = cars[0].name;
                 }
                 else if (cars[0].activeSelf && nextCarDirection == -1) //if in the limited of list / -1 = left button
                 {
                     cars[i].SetActive(false);
                     cars[cars.Length - 1].SetActive(true);
+                    currentCar = cars[cars.Length - 1].name;
                 }
                 else 
                 {
                     cars[i].SetActive(false);
                     cars[i + (nextCarDirection)].SetActive(true);
+                    currentCar = cars[i + (nextCarDirection)].name;
                 }
                 break; 
             }
@@ -100,15 +112,25 @@ public class MainMenu : MonoBehaviour //and store
             }
         }
     }
-    public void Store()
+    public void InStore()
     {
         if (currentScene == "Store")
         {
-            Debug.Log("Store");
+
         }
     }
-    public void Update()
+
+    private bool CanBuy(string currentCar)
     {
-        Store();
+        string canBuy = PlayerPrefs.GetString(currentCar);
+
+        if (canBuy == "Bought")
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
