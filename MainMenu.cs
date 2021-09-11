@@ -93,6 +93,10 @@ public class MainMenu : MonoBehaviour //and store
                         PlayerPrefs.Save();
                         select.text = "Select";
                     }
+                    else
+                    {
+                        //TODO: A pop-up "you need more money to buy this car"
+                    }
                 }
             }
         }
