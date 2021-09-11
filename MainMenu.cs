@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour //and store
     public Text carPrice;
     void Start()
     {
-        CreatingStructArray();
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
         coins.text = PlayerPrefs.GetInt("Coins", 0).ToString();
@@ -114,18 +113,7 @@ public class MainMenu : MonoBehaviour //and store
     {
         if (currentScene == "Store")
         {
-            for(int i = 0; i < cars.Length; i++)
-            {
-                if (cars[i].activeSelf)
-                {
-                    if (carName.text != CarsArray[i].carTitle)//optimization
-                    {
-                        carName.text = CarsArray[i].carTitle;
-                        carPrice.text = CarsArray[i].price.ToString();
-                        Debug.Log("a");
-                    }               
-                }
-            }
+
         }
     } 
 
@@ -142,44 +130,4 @@ public class MainMenu : MonoBehaviour //and store
             return true;
         }
     }
-    //--- Learning Structs
-    public struct Cars
-    {
-        public string carTitle;
-        public int price;
-        public int speed;
-    }
-
-    Cars car0;
-    Cars car1;
-    Cars car2;
-    Cars car3;
-    Cars car4;
-
-    public Cars[] CarsArray = new Cars[5];
-    public void CreatingStructArray()
-    {
-        car0.carTitle = "Car2";
-        car0.price = 100;
-
-        car1.carTitle = "SportCar2";
-        car1.price = 200;
-
-        car2.carTitle = "Jeep2";
-        car2.price = 300;
-
-        car3.carTitle = "MicroBus4";
-        car3.price = 400;
-
-        car4.carTitle = "Sedan1";
-        car4.price = 500;
-
-
-        CarsArray[0] = car0;
-        CarsArray[1] = car1;
-        CarsArray[2] = car2;
-        CarsArray[3] = car3;
-        CarsArray[4] = car4;
-    }
-    //----------------------------
 }
