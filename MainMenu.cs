@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour //and store
     public GameObject canvas;
     public string currentScene;
     public int currentCar;
-    private int coinsNumber;
+    public int coins;
     public Text coinsText;
     public Text carName;
     public Text carPriceText;
@@ -20,9 +20,9 @@ public class MainMenu : MonoBehaviour //and store
     {
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
-        coinsNumber = PlayerPrefs.GetInt("Coins", 0);
-        coinsText.text = coinsNumber.ToString();
         currentCar = PlayerPrefs.GetInt("SelectedCar", 0);
+        coins = PlayerPrefs.GetInt("Coins", 0);
+        coinsText.text = coins.ToString();
     }
     public void Update()
     {
@@ -84,12 +84,13 @@ public class MainMenu : MonoBehaviour //and store
             {
                 if (cars[currentCar].activeSelf)
                 {
-                    if (coinsNumber >= carPrices[currentCar])
+                    if (coins >= carPrices[currentCar])
                     {
                         PlayerPrefs.SetString(cars[currentCar].name, "Bought");
-                        coinsNumber -= carPrices[currentCar];
-                        PlayerPrefs.SetInt("Coins", coinsNumber);
-                        coinsText.text = coinsNumber.ToString();
+                        coins -= carPrices[currentCar];
+                        PlayerPrefs.SetInt("Coins", coins);
+                        coinsText.text = coins.ToString();
+                        PlayerPrefs.Save();
                     }
                 }
             }
