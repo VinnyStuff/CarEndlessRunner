@@ -9,10 +9,12 @@ public class MainMenu : MonoBehaviour //and store
     public GameObject[] cars;
     public GameObject canvas;
     public string currentScene;
+    public int currentCar;
     private int coinsNumber;
     public Text coinsText;
     public Text carName;
-    public Text carPrice;
+    public Text carPriceText;
+    public int[] carPrices;
     public Text select;
     void Start()
     {
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour //and store
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
         coinsNumber = PlayerPrefs.GetInt("Coins", 0);
         coinsText.text = coinsNumber.ToString();
+        currentCar = PlayerPrefs.GetInt("SelectedCar", 0);
     }
     public void Update()
     {
@@ -79,12 +82,12 @@ public class MainMenu : MonoBehaviour //and store
             }
             else if (select.text == "Buy")
             {
-                if (cars[0].activeSelf)
+                if (cars[currentCar].activeSelf)
                 {
-                    if (coinsNumber >= 5)
+                    if (coinsNumber >= carPrices[currentCar])
                     {
-                        PlayerPrefs.SetString(cars[0].name, "Bought");
-                        coinsNumber -= 5;
+                        PlayerPrefs.SetString(cars[currentCar].name, "Bought");
+                        coinsNumber -= carPrices[currentCar];
                         PlayerPrefs.SetInt("Coins", coinsNumber);
                         coinsText.text = coinsNumber.ToString();
                     }
@@ -102,16 +105,19 @@ public class MainMenu : MonoBehaviour //and store
                 {
                     cars[i].SetActive(false);
                     cars[0].SetActive(true);
+                    currentCar = 0;
                 }
                 else if (cars[0].activeSelf && nextCarDirection == -1) //if in the limited of list / -1 = left button
                 {
                     cars[i].SetActive(false);
                     cars[cars.Length - 1].SetActive(true);
+                    currentCar = cars.Length - 1;
                 }
                 else 
                 {
                     cars[i].SetActive(false);
                     cars[i + (nextCarDirection)].SetActive(true);
+                    currentCar += nextCarDirection;
                 }
                 break; 
             }
@@ -132,70 +138,32 @@ public class MainMenu : MonoBehaviour //and store
     {
         if (currentScene == "Store")
         {
-            if (cars[0].activeSelf)
+            if (cars[currentCar].activeSelf)
             {
-                carName.text = "";
-                if (CanBuy(cars[0].name) == true)
+                if (carName.text == cars[currentCar].name)//optimization
                 {
-                    select.text = "Buy";
+                    return;
                 }
-                else
-                {
-                    select.text = "Select";
-                }
-            }
-            else if (cars[1].activeSelf)
-            {
-                carName.text = "";
-                if (CanBuy(cars[1].name) == true)
-                {
-                    select.text = "Buy";
-                }
-                else
-                {
-                    select.text = "Select";
-                }
-            }
-            else if (cars[2].activeSelf)
-            {
-                carName.text = "";
-                if (CanBuy(cars[2].name) == true)
-                {
-                    select.text = "Buy";
-                }
-                else
-                {
-                    select.text = "Select";
-                }
-            }
-            else if (cars[3].activeSelf)
-            {
-                carName.text = "";
-                if (CanBuy(cars[3].name) == true)
-                {
-                    select.text = "Buy";
-                }
-                else
-                {
-                    select.text = "Select";
-                }
-            }
-            else if (cars[4].activeSelf)
-            {
-                carName.text = "";
-                if (CanBuy(cars[4].name) == true)
-                {
-                    select.text = "Buy";
-                }
-                else
-                {
-                    select.text = "Select";
-                }
+                carName.text = cars[currentCar].name;
+                carPriceText.text = carPrices[currentCar].ToString();
+                CanBuy();
+                Debug.Log("a");
             }
         }
     } 
 
-    private bool CanBuy(string currentCar)
+    public void CanBuy()
+    {
+        if (CheckCanBuy(cars[currentCar].name) == true)
+        {
+            select.text = "Buy";
+        }
+        else
+        {
+            select.text = "Select";
+        }
+    }
+    private bool CheckCanBuy(string currentCar)
     {
         string canBuy = PlayerPrefs.GetString(currentCar);
 
