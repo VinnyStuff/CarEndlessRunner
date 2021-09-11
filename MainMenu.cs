@@ -91,6 +91,7 @@ public class MainMenu : MonoBehaviour //and store
                         PlayerPrefs.SetInt("Coins", coins);
                         coinsText.text = coins.ToString();
                         PlayerPrefs.Save();
+                        select.text = "Select";
                     }
                 }
             }
@@ -146,13 +147,23 @@ public class MainMenu : MonoBehaviour //and store
                     return;
                 }
                 carName.text = cars[currentCar].name;
-                carPriceText.text = carPrices[currentCar].ToString();
-                CanBuy();
-                Debug.Log("a");
+                PutCarPrice();
             }
         }
     } 
-
+    public void PutCarPrice()
+    {
+        if (carPrices[currentCar] == 0)
+        {
+            carPriceText.text = "";
+            select.text = "Select";
+        }
+        else
+        {
+            carPriceText.text = carPrices[currentCar].ToString();
+            CanBuy();
+        }
+    }
     public void CanBuy()
     {
         if (CheckCanBuy(cars[currentCar].name) == true)
