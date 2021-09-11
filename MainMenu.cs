@@ -9,14 +9,17 @@ public class MainMenu : MonoBehaviour //and store
     public GameObject[] cars;
     public GameObject canvas;
     public string currentScene;
-    public Text coins;
+    private int coinsNumber;
+    public Text coinsText;
     public Text carName;
     public Text carPrice;
+    public Text select;
     void Start()
     {
         SetCurrentScene("MainMenu");
         cars[PlayerPrefs.GetInt("SelectedCar", 0)].SetActive(true);
-        coins.text = PlayerPrefs.GetInt("Coins", 0).ToString();
+        coinsNumber = PlayerPrefs.GetInt("Coins", 0);
+        coinsText.text = coinsNumber.ToString();
     }
     public void Update()
     {
@@ -69,8 +72,24 @@ public class MainMenu : MonoBehaviour //and store
         }
         if (EventSystem.current.currentSelectedGameObject.name == "Select")
         {
-            SaveTheSelectCar();
-            SetCurrentScene("MainMenu");
+            if (select.text == "Select")
+            {
+                SaveTheSelectCar();
+                SetCurrentScene("MainMenu");
+            }
+            else if (select.text == "Buy")
+            {
+                if (cars[0].activeSelf)
+                {
+                    if (coinsNumber >= 5)
+                    {
+                        PlayerPrefs.SetString(cars[0].name, "Bought");
+                        coinsNumber -= 5;
+                        PlayerPrefs.SetInt("Coins", coinsNumber);
+                        coinsText.text = coinsNumber.ToString();
+                    }
+                }
+            }
         }
     }
     private void ChangeTheCarInStore(int nextCarDirection)
@@ -113,7 +132,66 @@ public class MainMenu : MonoBehaviour //and store
     {
         if (currentScene == "Store")
         {
-
+            if (cars[0].activeSelf)
+            {
+                carName.text = "";
+                if (CanBuy(cars[0].name) == true)
+                {
+                    select.text = "Buy";
+                }
+                else
+                {
+                    select.text = "Select";
+                }
+            }
+            else if (cars[1].activeSelf)
+            {
+                carName.text = "";
+                if (CanBuy(cars[1].name) == true)
+                {
+                    select.text = "Buy";
+                }
+                else
+                {
+                    select.text = "Select";
+                }
+            }
+            else if (cars[2].activeSelf)
+            {
+                carName.text = "";
+                if (CanBuy(cars[2].name) == true)
+                {
+                    select.text = "Buy";
+                }
+                else
+                {
+                    select.text = "Select";
+                }
+            }
+            else if (cars[3].activeSelf)
+            {
+                carName.text = "";
+                if (CanBuy(cars[3].name) == true)
+                {
+                    select.text = "Buy";
+                }
+                else
+                {
+                    select.text = "Select";
+                }
+            }
+            else if (cars[4].activeSelf)
+            {
+                carName.text = "";
+                if (CanBuy(cars[4].name) == true)
+                {
+                    select.text = "Buy";
+                }
+                else
+                {
+                    select.text = "Select";
+                }
+            }
         }
     } 
 
