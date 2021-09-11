@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour //and store
     private void SetCurrentScene(string scene)
     {
         currentScene = scene;
-        for (int i = 1; i < canvas.gameObject.GetComponentsInChildren<Transform>().Length; i++)//clean the HUD
+        for (int i = 1; i < canvas.gameObject.GetComponentsInChildren<Transform>().Length - 1; i++)//clean the HUD
         {
             canvas.transform.GetChild(i).gameObject.SetActive(false);
         }
