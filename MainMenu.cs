@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour //and store
     public Text carPriceText;
     public int[] carPrices;
     public Text select;
+    public Text popUp;
     void Start()
     {
         SetCurrentScene("MainMenu");
@@ -96,6 +97,7 @@ public class MainMenu : MonoBehaviour //and store
                     else
                     {
                         //TODO: A pop-up "you need more money to buy this car"
+                        //fazer um fade aparecendo e sumindo o pop-up
                     }
                 }
             }
